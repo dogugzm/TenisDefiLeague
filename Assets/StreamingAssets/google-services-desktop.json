@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "114100770544",
+    "firebase_url": "https://tennisleague-50eaa-default-rtdb.europe-west1.firebasedatabase.app",
+    "project_id": "tennisleague-50eaa",
+    "storage_bucket": "tennisleague-50eaa.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:114100770544:android:7e949579d1ed46fc1ed435",
+        "android_client_info": {
+          "package_name": "com.TenisLeague.tennisDEFI"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "114100770544-l4nvpatkubsicu7e3ubfiqsspufi5l86.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyA4UK7da_c7Qdba6MINCOivbOn6AYkY1fI"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "114100770544-l4nvpatkubsicu7e3ubfiqsspufi5l86.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "114100770544-024v99kr7ue6if5iu6vq87562ccfctld.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.TenisLeague.UTL"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

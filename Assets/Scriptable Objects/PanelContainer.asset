@@ -1,0 +1,65 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9b720e9e72ef45c9af64dbc077b8de75, type: 3}
+  m_Name: PanelContainer
+  m_EditorClassIdentifier: 
+  panelConfigs:
+  - prefab: {fileID: 6863794108015671872, guid: 9f51c971b9ac52542a4445afc1afa79b, type: 3}
+    destroyOnHide: 0
+    canvasId: 0
+    shouldFitToCanvas: 1
+    prewarmCount: 0
+  - prefab: {fileID: 6734857288210541825, guid: cd15bb362a85fd54ba31213feff309df, type: 3}
+    destroyOnHide: 0
+    canvasId: 0
+    shouldFitToCanvas: 1
+    prewarmCount: 0
+  - prefab: {fileID: 4860728002451920834, guid: f08fec86fab1b624c9c00141501efe89, type: 3}
+    destroyOnHide: 0
+    canvasId: 0
+    shouldFitToCanvas: 1
+    prewarmCount: 0
+  - prefab: {fileID: 659826376091243293, guid: 29461c9dfa6d33a49a40a6bd4517c010, type: 3}
+    destroyOnHide: 0
+    canvasId: 0
+    shouldFitToCanvas: 1
+    prewarmCount: 0
+  - prefab: {fileID: 8992043814958625660, guid: 0fac7206dcaada147812102f09aae781, type: 3}
+    destroyOnHide: 0
+    canvasId: 0
+    shouldFitToCanvas: 1
+    prewarmCount: 0
+  - prefab: {fileID: 2825982832712501519, guid: deccefe0281730748b1b26ecd56c5682, type: 3}
+    destroyOnHide: 0
+    canvasId: 0
+    shouldFitToCanvas: 1
+    prewarmCount: 0
+  - prefab: {fileID: 7395934193805619311, guid: aa019960f18b1514bb4ca22845bd27ae, type: 3}
+    destroyOnHide: 0
+    canvasId: 0
+    shouldFitToCanvas: 1
+    prewarmCount: 0
+  - prefab: {fileID: 3362463753816199426, guid: eb0f45a91347a634a9ddfa2dce9ba841, type: 3}
+    destroyOnHide: 0
+    canvasId: 3
+    shouldFitToCanvas: 0
+    prewarmCount: 0
+  - prefab: {fileID: 4127926916738874657, guid: a1eedd1274837b44cb815191b168ec4a, type: 3}
+    destroyOnHide: 0
+    canvasId: 0
+    shouldFitToCanvas: 1
+    prewarmCount: 0
+  - prefab: {fileID: 3519481193755431133, guid: 3d47957544bf6dc43ae3fc83619b2a36, type: 3}
+    destroyOnHide: 0
+    canvasId: 0
+    shouldFitToCanvas: 1
+    prewarmCount: 0
