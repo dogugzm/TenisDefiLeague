@@ -8,7 +8,13 @@
       "hash": "b0d01ca75fc890b76e81202d655d17c1f4214a18"
     },
     "com.eastberries.firestoreservice": {
-      "version": "file:C:/Users/Dogu/UnityProjects/Packages/FirestoreHelper",
+      "version": "file:C:/Users/Dogu/UnityProjects/Packages/Eastberries/Firebase Service",
+      "depth": 0,
+      "source": "local",
+      "dependencies": {}
+    },
+    "com.eastberries.loadingservice": {
+      "version": "file:C:/Users/Dogu/UnityProjects/Packages/Eastberries/Loading Service",
       "depth": 0,
       "source": "local",
       "dependencies": {}
