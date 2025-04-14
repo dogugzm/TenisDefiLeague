@@ -3,6 +3,7 @@
     "com.cysharp.unitask": "https://github.com/Cysharp/UniTask.git?path=src/UniTask/Assets/Plugins/UniTask",
     "com.eastberries.firestoreservice": "file:C:/Users/Dogu/UnityProjects/Packages/Eastberries/Firebase Service",
     "com.eastberries.loadingservice": "file:C:/Users/Dogu/UnityProjects/Packages/Eastberries/Loading Service",
+    "com.eastberries.panelservice": "file:C:/Users/Dogu/UnityProjects/Packages/Eastberries/Panel Service",
     "com.unity.2d.sprite": "1.0.0",
     "com.unity.collab-proxy": "2.5.2",
     "com.unity.feature.2d": "2.0.0",

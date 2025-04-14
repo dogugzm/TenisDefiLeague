@@ -19,6 +19,12 @@
       "source": "local",
       "dependencies": {}
     },
+    "com.eastberries.panelservice": {
+      "version": "file:C:/Users/Dogu/UnityProjects/Packages/Eastberries/Panel Service",
+      "depth": 0,
+      "source": "local",
+      "dependencies": {}
+    },
     "com.unity.2d.animation": {
       "version": "9.0.4",
       "depth": 1,
