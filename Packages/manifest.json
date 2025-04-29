@@ -1,9 +1,10 @@
 {
   "dependencies": {
     "com.cysharp.unitask": "https://github.com/Cysharp/UniTask.git?path=src/UniTask/Assets/Plugins/UniTask",
-    "com.eastberries.firestoreservice": "file:C:/Users/Dogu/UnityProjects/Packages/Eastberries/Firebase Service",
-    "com.eastberries.loadingservice": "file:C:/Users/Dogu/UnityProjects/Packages/Eastberries/Loading Service",
-    "com.eastberries.panelservice": "file:C:/Users/Dogu/UnityProjects/Packages/Eastberries/Panel Service",
+    "com.eastberries.firestoreservice": "file:C:/Users/Dogu/UnityProjects/Packages/Eastberries/com.eastberries.firestoreservice",
+    "com.eastberries.helpers": "file:C:/Users/Dogu/UnityProjects/Packages/Eastberries/com.eastberries.helpers",
+    "com.eastberries.loadingservice": "file:C:/Users/Dogu/UnityProjects/Packages/Eastberries/com.eastberries.loadingservice",
+    "com.eastberries.panelservice": "file:C:/Users/Dogu/UnityProjects/Packages/Eastberries/com.eastberries.panelservice",
     "com.unity.2d.sprite": "1.0.0",
     "com.unity.collab-proxy": "2.5.2",
     "com.unity.feature.2d": "2.0.0",
