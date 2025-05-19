@@ -32,6 +32,7 @@ namespace Views
         [SerializeField] private TMP_Text matchScoreText;
         [SerializeField] private UserInfoView homeTeamLogo;
         [SerializeField] private UserInfoView awayTeamLogo;
+        [SerializeField] private TMP_Text leagueNameText;
 
         public UniTask InitAsync(Data data)
         {

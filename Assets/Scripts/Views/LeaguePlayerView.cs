@@ -1,10 +1,11 @@
 ﻿using Cysharp.Threading.Tasks;
 using TMPro;
 using UnityEngine;
+using UnityEngine.Serialization;
 
 namespace Views
 {
-    public class LeaguePlayerView : MonoBehaviour,IInitializableAsync<LeaguePlayerView.Data>
+    public class LeaguePlayerView : MonoBehaviour, IInitializableAsync<LeaguePlayerView.Data>
     {
         public enum Status
         {
@@ -17,28 +18,27 @@ namespace Views
 
         public class Data
         {
-            public LogoView.Data LogoViewData { get; }
+            public UserInfoView.Data UserViewData { get; }
             public string PlayerID { get; }
             public string LeagueID { get; }
 
-            public Data(LogoView.Data logoViewData, string playerID, string leagueID)
+            public Data(UserInfoView.Data userViewData, string playerID, string leagueID)
             {
-                LogoViewData = logoViewData;
+                UserViewData = userViewData;
                 PlayerID = playerID;
                 LeagueID = leagueID;
             }
         }
 
-        [SerializeField] private LogoView logoView;
-        [SerializeField] private TMP_Text playerNameText;
+        [SerializeField] private UserInfoView userView;
         [SerializeField] private TMP_Text playerRankText;
-        [SerializeField] private TMP_Text pointsText;
+        [SerializeField] private TMP_Text rankDiffText;
         [SerializeField] private TMP_Text winLoseText;
         [SerializeField] private TMP_Text statusText;
 
         public UniTask InitAsync(Data data)
         {
-            logoView.InitAsync(data.LogoViewData).Forget();
+            userView.InitAsync(data.UserViewData).Forget();
 
             SetPlayerInfo(data.PlayerID, data.LeagueID);
 
