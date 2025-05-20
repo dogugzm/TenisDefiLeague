@@ -8,7 +8,7 @@ namespace Views
     {
         public class Data
         {
-            public string UserName { get; }
+             public string UserName { get; }
             public LogoView.Data LogoViewData { get; }
 
             public Data(string userName, LogoView.Data logoViewData)

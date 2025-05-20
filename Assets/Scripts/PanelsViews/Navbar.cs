@@ -1,5 +1,6 @@
 ﻿using Cysharp.Threading.Tasks;
 using VContainer;
+using Views;
 
 namespace PanelsViews
 {
@@ -42,11 +43,27 @@ namespace PanelsViews
             _currentTabPanel = await _panelService.ShowPanelAsync<T>();
         }
 
+        private async UniTask SwitchTab<T, TE>(TE data) where T : IPanel
+        {
+            if (_currentTabPanel != null)
+            {
+                await _panelService.HidePanelAsync(_currentTabPanel);
+            }
+
+            _currentTabPanel = await _panelService.ShowPanelAsync<T, TE>(data);
+        }
+
+
         public override async Task ShowAsync()
         {
             await base.ShowAsync();
-            // Default olarak ilk tab'i aç
-            await SwitchTab<HomePanelView>();
+
+            await SwitchTab<HomePanelView, HomePanelView.Data>(new HomePanelView.Data(
+                new UserInfoView.Data("Hey, Dogukan", new LogoView.Data("dasadsf")),
+                new List<AnnouncementView.Data>(),
+                new List<LeagueInfoView.Data>(),
+                new List<MatchInfoView.Data>()
+            ));
         }
 
         public override async Task HideAsync()
