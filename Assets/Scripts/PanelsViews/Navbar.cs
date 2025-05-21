@@ -14,7 +14,17 @@ namespace PanelsViews
     {
         [SerializeField] private List<Button> tabButtons;
         [Inject] private IPanelService _panelService;
+
         private IPanel _currentTabPanel;
+        private ILeagueService _leagueService;
+        private UserManager _userManager;
+
+        [Inject]
+        private void Injection(ILeagueService leagueService, UserManager userManager)
+        {
+            _userManager = userManager;
+            _leagueService = leagueService;
+        }
 
         public override void Initialize()
         {
@@ -58,10 +68,18 @@ namespace PanelsViews
         {
             await base.ShowAsync();
 
+            var leagueData = await _leagueService.TryGetCurrentLeague();
+            var pos = await _leagueService.TryGetMyPositionInLeague(leagueData.Value.Id);
+
             await SwitchTab<HomePanelView, HomePanelView.Data>(new HomePanelView.Data(
-                new UserInfoView.Data("Hey, Dogukan", new LogoView.Data("dasadsf")),
+                new UserInfoView.Data($"Hey, {_userManager.Data.Name}", null),
                 new List<AnnouncementView.Data>(),
-                new List<LeagueInfoView.Data>(),
+                new List<LeagueInfoView.Data>()
+                {
+                    new LeagueInfoView.Data(leagueData.Value.Name, leagueData.Value.Description,
+                        null, leagueData.Value.Users.Count, pos
+                    )
+                },
                 new List<MatchInfoView.Data>()
             ));
         }

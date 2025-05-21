@@ -4,7 +4,7 @@ using UnityEngine;
 
 namespace Views
 {
-    public class LeagueInfoView : MonoBehaviour,IInitializableAsync<LeagueInfoView.Data>
+    public class LeagueInfoView : MonoBehaviour, IInitializableAsync<LeagueInfoView.Data>
     {
         public class Data
         {
@@ -32,14 +32,13 @@ namespace Views
 
         [SerializeField] private LogoView logoView;
 
-        public UniTask InitAsync(Data data)
+        public async UniTask InitAsync(Data data)
         {
-            logoView.InitAsync(data.LogoViewData).Forget();
+            //await logoView.InitAsync(data.LogoViewData);
             leagueNameText.text = data.LeagueName;
-            leagueDescriptionText.text = data.LeagueDescription;
+            if (leagueDescriptionText != null) leagueDescriptionText.text = data.LeagueDescription;
             leagueParticipantsText.text = data.LeagueParticipants.ToString();
             userPositionText.text = data.UserPosition.ToString();
-            return UniTask.CompletedTask;
         }
     }
 }

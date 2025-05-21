@@ -5,66 +5,70 @@ using FirebaseService;
 using TMPro;
 using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.Serialization;
 using VContainer;
 using VContainer.Unity;
+using Views;
 
 namespace PanelsViews
 {
-    public class LeagueProfilePanel : InnerPanelBase<LeaguesPanelView>, IPanelParameter<LeagueProfilePanel.Data>
+    public class LeagueProfilePanel : PanelBase, IPanelParameter<LeagueProfilePanel.Data>
     {
         public class Data
         {
-            public readonly string leagueId;
+            public LeagueInfoView.Data LeagueInfoData { get; }
+            public int Participants { get; }
+            public int TotalMatches { get; }
 
-            public Data(string leagueId)
+            public List<LeaguePlayerView.Data> LeaguePlayerViews { get; set; }
+
+            public Data(LeagueInfoView.Data leagueInfoData, int participants, int totalMatches,
+                List<LeaguePlayerView.Data> leaguePlayerViews)
             {
-                this.leagueId = leagueId;
+                LeagueInfoData = leagueInfoData;
+                Participants = participants;
+                TotalMatches = totalMatches;
+                LeaguePlayerViews = leaguePlayerViews;
             }
         }
 
+        [SerializeField] private LeagueInfoView leagueInfoView;
+        [SerializeField] private TMP_Text participantText;
+        [SerializeField] private TMP_Text playedMatchText;
+
+        [SerializeField] private LeaguePlayerView leaguePlayerViewPrefab;
+        [SerializeField] private Transform leaguePlayersContent;
+
         public Data Parameter { get; set; }
-        private IFirebaseService _firebaseService;
         private IObjectResolver _resolver;
-
-        [SerializeField] private TMP_Text leagueName;
-        [SerializeField] private TMP_Text leagueDescription;
-        [SerializeField] private LeaguePlayerItem leaguePlayerView;
-        [SerializeField] private Transform content;
-
         private List<GameObject> _leaguePlayers = new();
 
         [Inject]
-        private void Injection(IFirebaseService firebaseService, IObjectResolver resolver)
+        private void Injection(IObjectResolver resolver)
         {
-            _firebaseService = firebaseService;
             _resolver = resolver;
         }
 
-        private async void Init(LeagueData data)
+        private async Task InitAsync()
         {
-            leagueName.text = data.Name;
-            leagueDescription.text = data.Description;
             _leaguePlayers.ForEach(x => Destroy(x)); //TODO: Implement pooling
             _leaguePlayers.Clear();
 
-            foreach (var user in data.Users)
+            leagueInfoView.InitAsync(Parameter.LeagueInfoData);
+            participantText.text = Parameter.Participants.ToString();
+            playedMatchText.text = Parameter.TotalMatches.ToString();
+            foreach (var player in Parameter.LeaguePlayerViews)
             {
-                var userData =
-                    await _firebaseService.GetDataByIdAsync<UserData>(FirebaseCollectionConstants.USERS, user);
-                if (!userData.IsSuccess) continue;
-
-                LeaguePlayerItem leaguePlayer = _resolver.Instantiate(leaguePlayerView, content);
-                _leaguePlayers.Add(leaguePlayer.gameObject);
-                leaguePlayer.SetData(userData.Data);
+                var leaguePlayerView = _resolver.Instantiate(leaguePlayerViewPrefab, leaguePlayersContent);
+                await leaguePlayerView.InitAsync(player);
+                _leaguePlayers.Add(leaguePlayerView.gameObject);
             }
         }
 
+
         public override async Task ShowAsync()
         {
-            var leagueData = await _firebaseService.GetDataByIdAsync<LeagueData>(FirebaseCollectionConstants.LEAGUES,
-                Parameter.leagueId);
-            if (!leagueData.IsSuccess) return;
-            Init(leagueData.Data);
+            InitAsync();
             await base.ShowAsync();
         }
     }

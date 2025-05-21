@@ -1,5 +1,6 @@
 using Assets.Scripts.PanelService;
 using Managers;
+using MockDataSystem;
 using UnityEngine;
 using VContainer;
 using VContainer.Unity;
@@ -23,5 +24,8 @@ public class GameLifetimeScope : LifetimeScope
         builder.Register<AuthenticationService>(Lifetime.Singleton).AsImplementedInterfaces().AsSelf();
         builder.Register<UserManager>(Lifetime.Singleton).AsImplementedInterfaces().AsSelf();
         builder.Register<MatchService>(Lifetime.Singleton).AsImplementedInterfaces().AsSelf();
+
+        builder.Register<MockService>(Lifetime.Singleton).AsImplementedInterfaces()
+            .AsSelf();
     }
 }

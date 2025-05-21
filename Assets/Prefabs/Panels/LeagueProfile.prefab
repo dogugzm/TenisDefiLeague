@@ -1131,10 +1131,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   canvasGroup: {fileID: 3272970760840396327}
-  leagueName: {fileID: 0}
-  leagueDescription: {fileID: 0}
-  leaguePlayerView: {fileID: 7936024488552176577, guid: 5f9321f20bcd10844b95e359bb99a80c, type: 3}
-  content: {fileID: 0}
+  leagueInfoView: {fileID: 4724984726008957802}
+  participantText: {fileID: 345584551672427045}
+  playedMatchText: {fileID: 909434351392854476}
+  leaguePlayerViewPrefab: {fileID: 7041967310930729998, guid: 37d042d5c1eaee84a823be364c15862f, type: 3}
+  leaguePlayersContent: {fileID: 1776737756417043053}
 --- !u!1 &2606481856530113017
 GameObject:
   m_ObjectHideFlags: 0
@@ -2460,6 +2461,17 @@ RectTransform:
   m_CorrespondingSourceObject: {fileID: 386595749892011361, guid: b438920c96b64bd48a4b2341e1f21516, type: 3}
   m_PrefabInstance: {fileID: 3088324722020877903}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &4724984726008957802 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 7730827246741851429, guid: b438920c96b64bd48a4b2341e1f21516, type: 3}
+  m_PrefabInstance: {fileID: 3088324722020877903}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 46c8230748ba421d8d849a0cf20d176c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &3290020404884388036
 PrefabInstance:
   m_ObjectHideFlags: 0

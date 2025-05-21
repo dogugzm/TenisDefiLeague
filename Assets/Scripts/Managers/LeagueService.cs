@@ -25,6 +25,7 @@ public interface ILeagueService
     UniTask JoinLeague(string leagueID);
     UniTask LeaveLeague(string leagueID);
     UniTask<LeagueData?> TryGetCurrentLeague();
+    UniTask<int> TryGetMyPositionInLeague(string leagueID);
 }
 
 public class LeagueService : ILeagueService
@@ -92,5 +93,22 @@ public class LeagueService : ILeagueService
         }
 
         return null;
+    }
+
+    public async UniTask<int> TryGetMyPositionInLeague(string leagueID)
+    {
+        var leagueData = await TryGetCurrentLeague();
+        if (leagueData == null)
+        {
+            return -1;
+        }
+
+        var users = leagueData.Value.Users;
+        if (users.IsNullOrEmpty())
+        {
+            return -1;
+        }
+
+        return users.IndexOf(_userManager.Data.UserID);
     }
 }

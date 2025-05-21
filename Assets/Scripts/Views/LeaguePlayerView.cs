@@ -1,7 +1,6 @@
 ﻿using Cysharp.Threading.Tasks;
 using TMPro;
 using UnityEngine;
-using UnityEngine.Serialization;
 
 namespace Views
 {
@@ -19,14 +18,21 @@ namespace Views
         public class Data
         {
             public UserInfoView.Data UserViewData { get; }
-            public string PlayerID { get; }
-            public string LeagueID { get; }
+            public int PlayerRank { get; }
+            public int RankDiff { get; }
+            public int Wins { get; }
+            public int Losses { get; }
+            public Status PlayerStatus { get; }
 
-            public Data(UserInfoView.Data userViewData, string playerID, string leagueID)
+            public Data(UserInfoView.Data userViewData, int playerRank, int rankDiff, int wins, int losses,
+                Status playerStatus)
             {
                 UserViewData = userViewData;
-                PlayerID = playerID;
-                LeagueID = leagueID;
+                PlayerRank = playerRank;
+                RankDiff = rankDiff;
+                Wins = wins;
+                Losses = losses;
+                PlayerStatus = playerStatus;
             }
         }
 
@@ -39,14 +45,12 @@ namespace Views
         public UniTask InitAsync(Data data)
         {
             userView.InitAsync(data.UserViewData).Forget();
-
-            SetPlayerInfo(data.PlayerID, data.LeagueID);
+            playerRankText.text = data.PlayerRank.ToString();
+            rankDiffText.text = data.RankDiff.ToString();
+            winLoseText.text = $"{data.Wins} / {data.Losses}";
+            statusText.text = data.PlayerStatus.ToString();
 
             return UniTask.CompletedTask;
-        }
-
-        private void SetPlayerInfo(string dataPlayerID, string dataLeagueID)
-        {
         }
     }
 }
