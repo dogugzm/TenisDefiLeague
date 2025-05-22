@@ -49,7 +49,7 @@ public class LeaguePlayerItem : MonoBehaviour
         Name.text = userData.Name;
         Status.text = ((UserStatus)userData.UserStatus).ToString();
         bool isReady = (UserStatus)userData.UserStatus == UserStatus.AVAILABLE &&
-                       _userManager.Data.UserID != userData.UserID;
+                       _userManager.MyData.UserID != userData.UserID;
         offer.gameObject.SetActive(isReady);
         Status.gameObject.SetActive(!isReady);
     }

@@ -38,7 +38,7 @@ public class MatchService : IInitializable
     private readonly IFirebaseService _firebaseService;
     private readonly UserManager _userManager;
 
-    private readonly List<string> _matchesCollection = new();
+    private readonly List<string> _matchesIDCollection = new();
 
     public MatchService(IFirebaseService firebaseService, UserManager userManager)
     {
@@ -57,7 +57,7 @@ public class MatchService : IInitializable
         if (!matches.IsSuccess) return;
         foreach (var matchData in matches.Data)
         {
-            _matchesCollection.Add(matchData.Id);
+            _matchesIDCollection.Add(matchData.Id);
         }
     }
 
@@ -67,13 +67,43 @@ public class MatchService : IInitializable
         return !matchData.IsSuccess ? null : matchData.Data;
     }
 
+    public async UniTask<List<MatchData>> GetMatchesOfUser(string userId)
+    {
+        var userData = await _userManager.GetUserData(userId);
+        List<MatchData> userMatches = new();
+
+        foreach (var matchId in userData.Value.MatchPlayed)
+        {
+            var matchData = await TryGetMatchData(matchId);
+            if (matchData != null)
+            {
+                userMatches.Add(matchData);
+            }
+        }
+
+        return userMatches;
+    }
+
     public async UniTask<List<MatchData>> GetAllMatchesData()
     {
         var matchesData = new List<MatchData>();
-        foreach (var matchId in _matchesCollection)
+        foreach (var matchId in _matchesIDCollection)
         {
             var matchData = await TryGetMatchData(matchId);
             if (matchData != null) matchesData.Add(matchData);
+        }
+
+        return matchesData;
+    }
+
+    public async UniTask<List<MatchData>> GetMatchesByUserId(string userId)
+    {
+        var matchesData = new List<MatchData>();
+        foreach (var matchId in _matchesIDCollection)
+        {
+            var matchData = await TryGetMatchData(matchId);
+            if (matchData != null && (matchData.HomeUser == userId || matchData.AwayUser == userId))
+                matchesData.Add(matchData);
         }
 
         return matchesData;
@@ -85,12 +115,12 @@ public class MatchService : IInitializable
             await _firebaseService.GetDataByIdAsync<UserData>(FirebaseCollectionConstants.USERS, opponentId);
         if (!opponentUser.IsSuccess) return false;
         if (opponentUser.Data.UserStatus != (int)UserStatus.AVAILABLE ||
-            _userManager.Data.UserStatus != (int)UserStatus.AVAILABLE) return false;
+            _userManager.MyData.UserStatus != (int)UserStatus.AVAILABLE) return false;
 
         var matchData = new MatchData()
         {
-            Id = $"Match_{_userManager.Data.Name}_{opponentUser.Data.Name}_{DateTime.UtcNow}",
-            HomeUser = _userManager.Data.UserID,
+            Id = $"Match_{_userManager.MyData.Name}_{opponentUser.Data.Name}_{DateTime.UtcNow}",
+            HomeUser = _userManager.MyData.UserID,
             AwayUser = opponentId,
             StartDate = DateTime.UtcNow,
             EndDate = DateTime.UtcNow + TimeSpan.FromDays(10),
@@ -101,7 +131,7 @@ public class MatchService : IInitializable
         if (!await TryCreateMatch(matchData)) return false;
 
         await SetUsersStatus(opponentId);
-        _matchesCollection.Add(matchData.Id);
+        _matchesIDCollection.Add(matchData.Id);
         return true;
     }
 
@@ -141,12 +171,12 @@ public class MatchService : IInitializable
                 { nameof(UserData.UserStatus), UserStatus.IN_MATCH },
             });
 
-        await _firebaseService.UpdateDataAsync(FirebaseCollectionConstants.USERS, _userManager.Data.UserID,
+        await _firebaseService.UpdateDataAsync(FirebaseCollectionConstants.USERS, _userManager.MyData.UserID,
             new Dictionary<string, object>()
             {
                 { nameof(UserData.UserStatus), UserStatus.IN_MATCH },
             });
 
-        await _userManager.SyncUserData();
+        await _userManager.SyncMyData();
     }
 }

@@ -42,14 +42,14 @@ namespace PanelsViews
 
             foreach (var leagueData in leagues.Data)
             {
-                if (leagueData.Id == _userManager.Data.LeaguesJoined) continue;
+                if (leagueData.Id == _userManager.MyData.LeaguesJoined) continue;
                 CreateLeagueRow(leagueData);
             }
         }
 
         private void CheckUserLeague(List<LeagueData> leaguesData)
         {
-            var league = leaguesData.FirstOrDefault(item => item.Id == _userManager.Data.LeaguesJoined);
+            var league = leaguesData.FirstOrDefault(item => item.Id == _userManager.MyData.LeaguesJoined);
             CreateLeagueRow(league);
         }
 

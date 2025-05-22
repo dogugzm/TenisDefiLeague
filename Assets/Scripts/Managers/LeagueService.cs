@@ -51,7 +51,7 @@ public class LeagueService : ILeagueService
 
     async UniTask ILeagueService.JoinLeague(string leagueID)
     {
-        if (!string.IsNullOrEmpty(_userManager.Data.LeaguesJoined))
+        if (!string.IsNullOrEmpty(_userManager.MyData.LeaguesJoined))
         {
             Debug.LogError("User already joined a league");
             return;
@@ -59,18 +59,18 @@ public class LeagueService : ILeagueService
 
         var addUserTask = _firebaseService.UpdateDataAsync(FirebaseCollectionConstants.LEAGUES, leagueID,
             new Dictionary<string, object>
-                { { FirebaseCollectionConstants.USERS, FieldValue.ArrayUnion(_userManager.Data.UserID) } });
+                { { FirebaseCollectionConstants.USERS, FieldValue.ArrayUnion(_userManager.MyData.UserID) } });
 
         var updateUserData = _firebaseService.UpdateDataAsync(
             newData: new Dictionary<string, object>
                 { { "LeaguesJoined", leagueID }, { "UserStatus", UserStatus.AVAILABLE } },
             collectionName: FirebaseCollectionConstants.USERS,
-            id: _userManager.Data.UserID);
+            id: _userManager.MyData.UserID);
 
 
         var tasks = new UniTask[] { addUserTask, updateUserData };
         await UniTask.WhenAll(tasks);
-        await _userManager.SyncUserData();
+        await _userManager.SyncMyData();
     }
 
     public UniTask LeaveLeague(string leagueID)
@@ -80,13 +80,13 @@ public class LeagueService : ILeagueService
 
     public async UniTask<LeagueData?> TryGetCurrentLeague()
     {
-        if (string.IsNullOrEmpty(_userManager.Data.LeaguesJoined))
+        if (string.IsNullOrEmpty(_userManager.MyData.LeaguesJoined))
         {
             return null;
         }
 
         var data = await _firebaseService.GetDataByIdAsync<LeagueData>(FirebaseCollectionConstants.LEAGUES,
-            _userManager.Data.LeaguesJoined);
+            _userManager.MyData.LeaguesJoined);
         if (data.IsSuccess)
         {
             return data.Data;
@@ -109,6 +109,6 @@ public class LeagueService : ILeagueService
             return -1;
         }
 
-        return users.IndexOf(_userManager.Data.UserID);
+        return users.IndexOf(_userManager.MyData.UserID);
     }
 }

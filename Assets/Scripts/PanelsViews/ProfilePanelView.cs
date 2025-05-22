@@ -20,7 +20,7 @@ namespace PanelsViews
 
         private async void InitializePanel()
         {
-            var user = await _firebaseService.GetDataByIdAsync<UserData>("Users", _userManager.Data.UserID);
+            var user = await _firebaseService.GetDataByIdAsync<UserData>("Users", _userManager.MyData.UserID);
             SetData(user.Data);
         }
 

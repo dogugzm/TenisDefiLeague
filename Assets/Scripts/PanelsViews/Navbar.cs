@@ -72,7 +72,7 @@ namespace PanelsViews
             var pos = await _leagueService.TryGetMyPositionInLeague(leagueData.Value.Id);
 
             await SwitchTab<HomePanelView, HomePanelView.Data>(new HomePanelView.Data(
-                new UserInfoView.Data($"Hey, {_userManager.Data.Name}", null),
+                new UserInfoView.Data($"Hey, {_userManager.MyData.Name}", null),
                 new List<AnnouncementView.Data>(),
                 new List<LeagueInfoView.Data>()
                 {

@@ -31,6 +31,8 @@ namespace PanelsViews
         [SerializeField] private Transform upcomingMatchesParent;
         [SerializeField] private Transform announcementsParent;
         [SerializeField] private LeagueInfoView leagueInfoViewPrefab;
+        [SerializeField] private MatchInfoView matchInfoViewPrefab;
+
 
         public Data Parameter { get; set; }
 
@@ -56,9 +58,8 @@ namespace PanelsViews
         {
             foreach (var matchInfo in matchData)
             {
-                // var matchInfoView = Instantiate(matchInfoViewPrefab, upcomingMatchesParent);
-                // awa
-                // matchInfoView.InitAsync(matchInfo).Forget();
+                var matchInfoView = Instantiate(matchInfoViewPrefab, upcomingMatchesParent);
+                matchInfoView.InitAsync(matchInfo).Forget();
             }
         }
 
