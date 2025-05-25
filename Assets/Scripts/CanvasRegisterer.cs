@@ -1,4 +1,4 @@
-using Assets.Scripts.PanelService;
+using PanelService;
 using UnityEngine;
 using VContainer;
 

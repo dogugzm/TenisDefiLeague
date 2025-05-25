@@ -1,8 +1,12 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
-using Assets.Scripts.PanelService;
 using Cysharp.Threading.Tasks;
+using PanelService;
+using Sirenix.OdinInspector;
+using Unity.Collections.LowLevel.Unsafe;
 using UnityEngine;
+using VContainer;
+using VContainer.Unity;
 using Views;
 
 namespace PanelsViews
@@ -27,18 +31,45 @@ namespace PanelsViews
         }
 
         [SerializeField] private UserInfoView userInfoView;
-        [SerializeField] private Transform joinedLeaguesParent;
-        [SerializeField] private Transform upcomingMatchesParent;
-        [SerializeField] private Transform announcementsParent;
-        [SerializeField] private LeagueInfoView leagueInfoViewPrefab;
-        [SerializeField] private MatchInfoView matchInfoViewPrefab;
+
+        [FoldoutGroup("LEAGUE")] [SerializeField]
+        private Transform joinedLeaguesParent;
+
+        [FoldoutGroup("LEAGUE")] [SerializeField]
+        private GameObject joinedLeaguesArea;
+
+        [FoldoutGroup("LEAGUE")] [SerializeField]
+        private LeagueInfoView leagueInfoViewPrefab;
+
+        [FoldoutGroup("MATCH")] [SerializeField]
+        private Transform upcomingMatchesParent;
+
+        [FoldoutGroup("MATCH")] [SerializeField]
+        private GameObject upcomingMatchesArea;
+
+        [FoldoutGroup("MATCH")] [SerializeField]
+        private MatchInfoView matchInfoViewPrefab;
+
+        [FoldoutGroup("ANNOUNCEMENT")] [SerializeField]
+        private Transform announcementsParent;
+
+        [FoldoutGroup("ANNOUNCEMENT")] [SerializeField]
+        private GameObject announcementsArea;
 
         [SerializeField] private Transform HeaderArea;
+
+        private IObjectResolver _objectResolver;
 
         public Data Parameter { get; set; }
         public Transform GetHeaderParent() => HeaderArea;
         public HeaderPanelViewUser.Data HeaderData => new(PanelName, Parameter.UserInfoData);
         public HeaderPanelViewUser HeaderView { get; set; }
+
+        [Inject]
+        public void Injection(IObjectResolver objectResolver)
+        {
+            _objectResolver = objectResolver;
+        }
 
         public override async Task ShowAsync()
         {
@@ -51,29 +82,57 @@ namespace PanelsViews
 
         private async UniTask CreateLeagueViews(List<LeagueInfoView.Data> leagueData)
         {
-            foreach (var leagueInfo in leagueData)
+            if (SetContainerIsNotVisible(leagueData.Count, joinedLeaguesArea))
             {
-                var leagueInfoView = Instantiate(leagueInfoViewPrefab, joinedLeaguesParent);
-                await leagueInfoView.InitAsync(leagueInfo);
+                ShowPopulerLeagues();
+            }
+            else
+            {
+                foreach (var leagueInfo in leagueData)
+                {
+                    var leagueInfoView = _objectResolver.Instantiate(leagueInfoViewPrefab, joinedLeaguesParent);
+                    await leagueInfoView.InitAsync(leagueInfo);
+                }
             }
         }
 
+        private UniTask ShowPopulerLeagues()
+        {
+            //TODO: Implement logic to show popular leagues when the user has no joined leagues.
+            return UniTask.CompletedTask;
+        }
+
+
         private async UniTask CreateMatchViews(List<MatchInfoView.Data> matchData)
         {
+            if (SetContainerIsNotVisible(matchData.Count, upcomingMatchesArea)) return;
             foreach (var matchInfo in matchData)
             {
-                var matchInfoView = Instantiate(matchInfoViewPrefab, upcomingMatchesParent);
+                var matchInfoView = _objectResolver.Instantiate(matchInfoViewPrefab, upcomingMatchesParent);
                 matchInfoView.InitAsync(matchInfo).Forget();
             }
         }
 
         private async UniTask CreateAnnouncementViews(List<AnnouncementView.Data> announcementData)
         {
+            if (SetContainerIsNotVisible(announcementData.Count, announcementsArea)) return;
             foreach (var announcementInfo in announcementData)
             {
                 // var announcementInfoView = Instantiate(announcementInfoViewPrefab, announcementsParent);
                 // announcementInfoView.InitAsync(announcementInfo).Forget();
             }
+        }
+
+        private bool SetContainerIsNotVisible(int count, GameObject area)
+        {
+            if (count == 0)
+            {
+                area.SetActive(false);
+                return true;
+            }
+
+            area.SetActive(true);
+            return false;
         }
     }
 }

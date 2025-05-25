@@ -1,4 +1,5 @@
 ﻿using Cysharp.Threading.Tasks;
+using PanelService;
 using VContainer;
 using Views;
 
@@ -8,7 +9,6 @@ namespace PanelsViews
     using UnityEngine;
     using UnityEngine.UI;
     using System.Threading.Tasks;
-    using Assets.Scripts.PanelService;
 
     public class NavbarPanel : PanelBase
     {
@@ -77,7 +77,7 @@ namespace PanelsViews
                 new List<LeagueInfoView.Data>()
                 {
                     new LeagueInfoView.Data(leagueData.Value.Name, leagueData.Value.Description,
-                        null, leagueData.Value.Users.Count, pos
+                        null, leagueData.Value.Users.Count, pos, leagueData.Value.Id
                     )
                 },
                 new List<MatchInfoView.Data>()

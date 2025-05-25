@@ -4,9 +4,10 @@ using UnityEngine.UI;
 
 namespace Views
 {
-    interface IInitializableAsync<in T>
+    interface IInitializableAsync<T>
     {
         public UniTask InitAsync(T data);
+        public T Parameter { get; }
     }
 
     public class LogoView : MonoBehaviour, IInitializableAsync<LogoView.Data>
@@ -28,6 +29,8 @@ namespace Views
             logoImage.sprite = GetImageViaLink();
             return UniTask.CompletedTask;
         }
+
+        public Data Parameter { get; }
 
         private Sprite GetImageViaLink()
         {

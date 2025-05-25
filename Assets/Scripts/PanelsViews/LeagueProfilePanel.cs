@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
-using Assets.Scripts.PanelService;
 using FirebaseService;
+using PanelService;
 using TMPro;
 using Unity.VisualScripting;
 using UnityEngine;

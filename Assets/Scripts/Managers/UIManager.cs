@@ -1,4 +1,5 @@
 using System;
+using PanelService;
 using PanelsViews;
 using UnityEngine;
 using VContainer;

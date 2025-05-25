@@ -1,9 +1,9 @@
 using System.Collections.Generic;
 using System.Linq;
-using Assets.Scripts.PanelService;
 using Cysharp.Threading.Tasks;
 using FirebaseService;
 using MockDataSystem;
+using PanelService;
 using UnityEngine;
 using VContainer;
 using Views;
@@ -60,27 +60,11 @@ namespace PanelsViews
 
             leagueItem.Button.onClick.AddListener(async () =>
             {
-                var userList = new List<LeaguePlayerView.Data>();
-                foreach (var user in data.Users)
-                {
-                    var userData =
-                        await _firebaseService.GetDataByIdAsync<UserData>(FirebaseCollectionConstants.USERS, user);
-                    if (userData.IsSuccess)
-                    {
-                        userList.Add(new LeaguePlayerView.Data(
-                            new UserInfoView.Data(userData.Data.Name, null),
-                            1,
-                            3,
-                            20,
-                            4,
-                            (LeaguePlayerView.Status)userData.Data.UserStatus
-                        ));
-                    }
-                }
-
+                var userList = await _leagueService.GetAllLeaguePlayers(data);
                 _panelService.ShowPanelAsync<LeagueProfilePanel, LeagueProfilePanel.Data>(
                     new LeagueProfilePanel.Data(
-                        new LeagueInfoView.Data(data.Name, data.Description, null, data.Users.Count, data.Users.Count),
+                        new LeagueInfoView.Data(data.Name, data.Description, null, data.Users.Count, data.Users.Count,
+                            data.Id),
                         data.Users.Count,
                         data.Users.Count,
                         userList

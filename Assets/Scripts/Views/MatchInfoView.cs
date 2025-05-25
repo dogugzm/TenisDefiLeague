@@ -47,5 +47,7 @@ namespace Views
 
             return UniTask.CompletedTask;
         }
+
+        public Data Parameter { get; }
     }
 }

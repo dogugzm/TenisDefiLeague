@@ -1,5 +1,5 @@
-using Assets.Scripts.PanelService;
 using Managers;
+using PanelService;
 using UnityEngine;
 using UnityEngine.UI;
 using VContainer;

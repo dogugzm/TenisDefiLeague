@@ -1,6 +1,6 @@
 ﻿using System;
-using Assets.Scripts.PanelService;
 using Managers;
+using PanelService;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;

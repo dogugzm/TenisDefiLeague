@@ -1,5 +1,6 @@
 ﻿using System;
 using FirebaseService;
+using PanelService;
 using PanelsViews;
 using TMPro;
 using UnityEngine;

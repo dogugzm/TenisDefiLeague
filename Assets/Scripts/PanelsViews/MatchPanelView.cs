@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
-using Assets.Scripts.PanelService;
 using ListViews;
+using PanelService;
 using UnityEngine;
 using VContainer;
 using VContainer.Unity;

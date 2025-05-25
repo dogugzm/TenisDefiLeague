@@ -1,5 +1,5 @@
-using Assets.Scripts.PanelService;
 using FirebaseService;
+using PanelService;
 using TMPro;
 using VContainer;
 

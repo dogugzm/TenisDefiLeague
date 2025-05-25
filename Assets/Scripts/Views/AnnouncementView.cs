@@ -33,5 +33,7 @@ namespace Views
             announcementDescriptionText.text = data.AnnouncementDescription;
             return UniTask.CompletedTask;
         }
+
+        public Data Parameter { get; }
     }
 }

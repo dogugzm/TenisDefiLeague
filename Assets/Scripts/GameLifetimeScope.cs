@@ -1,6 +1,6 @@
-using Assets.Scripts.PanelService;
 using Managers;
 using MockDataSystem;
+using PanelService;
 using PanelsViews;
 using UnityEngine;
 using VContainer;
@@ -23,7 +23,7 @@ public class GameLifetimeScope : LifetimeScope
             .AsSelf();
 
 
-        builder.Register<PanelService>(Lifetime.Singleton).AsImplementedInterfaces().AsSelf();
+        builder.Register<PanelService.PanelService>(Lifetime.Singleton).AsImplementedInterfaces().AsSelf();
         builder.Register<PanelFactory>(Lifetime.Singleton).AsImplementedInterfaces().AsSelf();
         builder.Register<PanelPool>(Lifetime.Singleton).AsImplementedInterfaces().AsSelf();
         builder.Register<HeaderService>(Lifetime.Singleton).AsImplementedInterfaces().AsSelf();

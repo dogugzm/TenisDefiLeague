@@ -19,13 +19,13 @@ namespace Managers
             _firebaseService = firebaseService;
         }
 
+
         public event Action<UserData> OnAuthenticated;
 
         private void AuthenticateUser(UserData data)
         {
             OnAuthenticated?.Invoke(data);
         }
-
 
         public bool HasAuthCache()
         {

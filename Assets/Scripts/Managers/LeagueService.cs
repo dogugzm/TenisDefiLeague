@@ -6,6 +6,8 @@ using Cysharp.Threading.Tasks;
 using FirebaseService;
 using Sirenix.Utilities;
 using UnityEngine;
+using UnityEngine.UI;
+using Views;
 
 [FirestoreData]
 public struct LeagueData
@@ -24,8 +26,11 @@ public interface ILeagueService
     UniTask DeleteLeague(string leagueID);
     UniTask JoinLeague(string leagueID);
     UniTask LeaveLeague(string leagueID);
+    UniTask<LeagueData?> GetLeague(string leagueID);
     UniTask<LeagueData?> TryGetCurrentLeague();
     UniTask<int> TryGetMyPositionInLeague(string leagueID);
+    UniTask<List<LeaguePlayerView.Data>> GetAllLeaguePlayers(string leagueID);
+    UniTask<List<LeaguePlayerView.Data>> GetAllLeaguePlayers(LeagueData leagueData);
 }
 
 public class LeagueService : ILeagueService
@@ -78,6 +83,18 @@ public class LeagueService : ILeagueService
         throw new NotImplementedException();
     }
 
+    public async UniTask<LeagueData?> GetLeague(string leagueID)
+    {
+        var data = await _firebaseService.GetDataByIdAsync<LeagueData>(FirebaseCollectionConstants.LEAGUES,
+            leagueID);
+        if (data.IsSuccess)
+        {
+            return data.Data;
+        }
+
+        return null;
+    }
+
     public async UniTask<LeagueData?> TryGetCurrentLeague()
     {
         if (string.IsNullOrEmpty(_userManager.MyData.LeaguesJoined))
@@ -110,5 +127,57 @@ public class LeagueService : ILeagueService
         }
 
         return users.IndexOf(_userManager.MyData.UserID);
+    }
+
+    public async UniTask<List<LeaguePlayerView.Data>> GetAllLeaguePlayers(string leagueID)
+    {
+        var leagueData = await GetLeague(leagueID);
+        if (leagueData is null)
+        {
+            return new List<LeaguePlayerView.Data>();
+        }
+
+        var userList = new List<LeaguePlayerView.Data>();
+        foreach (var user in leagueData.Value.Users)
+        {
+            var userData =
+                await _firebaseService.GetDataByIdAsync<UserData>(FirebaseCollectionConstants.USERS, user);
+            if (userData.IsSuccess)
+            {
+                userList.Add(new LeaguePlayerView.Data(
+                    new UserInfoView.Data(userData.Data.Name, null),
+                    1,
+                    3,
+                    20,
+                    4,
+                    (LeaguePlayerView.Status)userData.Data.UserStatus
+                ));
+            }
+        }
+
+        return userList;
+    }
+
+    public async UniTask<List<LeaguePlayerView.Data>> GetAllLeaguePlayers(LeagueData leagueData)
+    {
+        var userList = new List<LeaguePlayerView.Data>();
+        foreach (var user in leagueData.Users)
+        {
+            var userData =
+                await _firebaseService.GetDataByIdAsync<UserData>(FirebaseCollectionConstants.USERS, user);
+            if (userData.IsSuccess)
+            {
+                userList.Add(new LeaguePlayerView.Data(
+                    new UserInfoView.Data(userData.Data.Name, null),
+                    1,
+                    3,
+                    20,
+                    4,
+                    (LeaguePlayerView.Status)userData.Data.UserStatus
+                ));
+            }
+        }
+
+        return userList;
     }
 }

@@ -1,4 +1,5 @@
-﻿using TMPro;
+﻿using PanelService;
+using TMPro;
 using UnityEngine;
 
 namespace PanelsViews
