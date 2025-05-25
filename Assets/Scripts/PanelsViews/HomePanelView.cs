@@ -7,7 +7,7 @@ using Views;
 
 namespace PanelsViews
 {
-    public class HomePanelView : PanelBase, IPanelParameter<HomePanelView.Data>
+    public class HomePanelView : PanelBase, IPanelParameter<HomePanelView.Data>, IUserHeader
     {
         public class Data
         {
@@ -33,8 +33,12 @@ namespace PanelsViews
         [SerializeField] private LeagueInfoView leagueInfoViewPrefab;
         [SerializeField] private MatchInfoView matchInfoViewPrefab;
 
+        [SerializeField] private Transform HeaderArea;
 
         public Data Parameter { get; set; }
+        public Transform GetHeaderParent() => HeaderArea;
+        public HeaderPanelViewUser.Data HeaderData => new(PanelName, Parameter.UserInfoData);
+        public HeaderPanelViewUser HeaderView { get; set; }
 
         public override async Task ShowAsync()
         {
