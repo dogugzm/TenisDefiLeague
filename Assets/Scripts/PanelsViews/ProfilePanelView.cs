@@ -1,36 +1,82 @@
-using FirebaseService;
+using System.Collections.Generic;
+using System.Threading.Tasks;
+using Cysharp.Threading.Tasks;
 using PanelService;
 using TMPro;
-using VContainer;
+using UnityEngine;
+using Views;
 
 namespace PanelsViews
 {
-    public class ProfilePanelView : PanelBase
+    public class ProfilePanelView : PanelBase, ITitleHeader, IInitializableAsync<ProfilePanelView.Data>
     {
-        public TextMeshProUGUI Name;
-        public TextMeshProUGUI Rank;
-
-        [Inject] private readonly IFirebaseService _firebaseService;
-        [Inject] private readonly UserManager _userManager;
-
-        private void Start()
+        public class Data
         {
-            InitializePanel();
+            public Data(UserInfoView.Data userInfo, int winRate, int totalMatches, int highestRank,
+                List<AchievementView.Data> achievements, List<MatchInfoView.Data> matchData)
+            {
+                UserInfo = userInfo;
+                WinRate = winRate;
+                TotalMatches = totalMatches;
+                HighestRank = highestRank;
+                Achievements = achievements;
+                MatchData = matchData;
+            }
+
+            public UserInfoView.Data UserInfo { get; set; }
+            public int WinRate { get; set; }
+            public int TotalMatches { get; set; }
+            public int HighestRank { get; set; }
+            public List<AchievementView.Data> Achievements { get; set; }
+            public List<MatchInfoView.Data> MatchData { get; set; }
         }
 
-        private async void InitializePanel()
+        [SerializeField] private Transform headerParent;
+        [SerializeField] private UserInfoView userInfoView;
+        [SerializeField] private TMP_Text winRateText;
+        [SerializeField] private TMP_Text totalMatchesText;
+        [SerializeField] private TMP_Text highestRankText;
+
+        [SerializeField] private AchievementView achievementViewPrefab;
+        [SerializeField] private Transform achievementsParent;
+
+        [SerializeField] private MatchInfoView matchInfoViewPrefab;
+        [SerializeField] private Transform matchesParent;
+
+        public Transform GetHeaderParent() => headerParent;
+
+        public HeaderPanelViewTitle.Data HeaderData => new("Profile");
+
+        public HeaderPanelViewTitle HeaderView { get; set; }
+
+        public override Task ShowAsync()
         {
-            var user = await _firebaseService.GetDataByIdAsync<UserData>("Users", _userManager.MyData.UserID);
-            SetData(user.Data);
+            InitAsync(Parameter).Forget();
+            return base.ShowAsync();
         }
 
-        private async void SetData(UserData data)
+        public UniTask InitAsync(Data data)
         {
-            Name.text = data.Name;
-            var leagueData =
-                await _firebaseService.GetDataByIdAsync<LeagueData>(FirebaseCollectionConstants.LEAGUES,
-                    "League001");
-            //Rank.text = $"#{leagueData.Users.First(item => item.Id == UserManager.Instance.data.UserID).Rank}";
+            Parameter = data;
+            userInfoView.InitAsync(data.UserInfo);
+            winRateText.text = $"{data.WinRate}%";
+            totalMatchesText.text = data.TotalMatches.ToString();
+            highestRankText.text = data.HighestRank.ToString();
+            foreach (var achievement in data.Achievements)
+            {
+                var achievementView = Instantiate(achievementViewPrefab, achievementsParent);
+                achievementView.InitAsync(achievement);
+            }
+
+            foreach (var match in data.MatchData)
+            {
+                var matchView = Instantiate(matchInfoViewPrefab, matchesParent);
+                matchView.InitAsync(match);
+            }
+
+            return UniTask.CompletedTask;
         }
+
+        public Data Parameter { get; set; }
     }
 }

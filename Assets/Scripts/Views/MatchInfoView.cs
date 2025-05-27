@@ -22,6 +22,15 @@ namespace Views
 
         public class Data
         {
+            public Data(DateTime matchDate, UserInfoView.Data homeTeamData, UserInfoView.Data awayTeamData,
+                List<MatchSetData> matchScore)
+            {
+                MatchDate = matchDate;
+                HomeTeamData = homeTeamData;
+                AwayTeamData = awayTeamData;
+                MatchScore = matchScore;
+            }
+
             public DateTime MatchDate { get; }
             public UserInfoView.Data HomeTeamData { get; }
             public UserInfoView.Data AwayTeamData { get; }
