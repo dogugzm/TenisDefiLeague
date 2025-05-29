@@ -8,7 +8,7 @@ using Views;
 
 namespace PanelsViews
 {
-    public class ProfilePanelView : PanelBase, ITitleHeader, IInitializableAsync<ProfilePanelView.Data>
+    public class ProfilePanelView : PanelBase, ITitleHeader, IPanelParameter<ProfilePanelView.Data>
     {
         public class Data
         {
@@ -51,24 +51,23 @@ namespace PanelsViews
 
         public override Task ShowAsync()
         {
-            InitAsync(Parameter).Forget();
+            InitAsync().Forget();
             return base.ShowAsync();
         }
 
-        public UniTask InitAsync(Data data)
+        private UniTask InitAsync()
         {
-            Parameter = data;
-            userInfoView.InitAsync(data.UserInfo);
-            winRateText.text = $"{data.WinRate}%";
-            totalMatchesText.text = data.TotalMatches.ToString();
-            highestRankText.text = data.HighestRank.ToString();
-            foreach (var achievement in data.Achievements)
+            userInfoView.InitAsync(Parameter.UserInfo);
+            winRateText.text = $"{Parameter.WinRate}%";
+            totalMatchesText.text = Parameter.TotalMatches.ToString();
+            highestRankText.text = Parameter.HighestRank.ToString();
+            foreach (var achievement in Parameter.Achievements)
             {
                 var achievementView = Instantiate(achievementViewPrefab, achievementsParent);
                 achievementView.InitAsync(achievement);
             }
 
-            foreach (var match in data.MatchData)
+            foreach (var match in Parameter.MatchData)
             {
                 var matchView = Instantiate(matchInfoViewPrefab, matchesParent);
                 matchView.InitAsync(match);

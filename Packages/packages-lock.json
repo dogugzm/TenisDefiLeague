@@ -17,25 +17,31 @@
       "hash": "b0d01ca75fc890b76e81202d655d17c1f4214a18"
     },
     "com.eastberries.firestoreservice": {
-      "version": "file:C:/Users/Dogu/UnityProjects/Packages/Eastberries/com.eastberries.firestoreservice",
+      "version": "file:C:/Users/Dogu/UnityProjects/CustomPackages/Eastberries/com.eastberries.firestoreservice",
       "depth": 0,
       "source": "local",
       "dependencies": {}
     },
     "com.eastberries.helpers": {
-      "version": "file:C:/Users/Dogu/UnityProjects/Packages/Eastberries/com.eastberries.helpers",
+      "version": "file:C:/Users/Dogu/UnityProjects/CustomPackages/Eastberries/com.eastberries.helpers",
       "depth": 0,
       "source": "local",
       "dependencies": {}
     },
     "com.eastberries.loadingservice": {
-      "version": "file:C:/Users/Dogu/UnityProjects/Packages/Eastberries/com.eastberries.loadingservice",
+      "version": "file:C:/Users/Dogu/UnityProjects/CustomPackages/Eastberries/com.eastberries.loadingservice",
+      "depth": 0,
+      "source": "local",
+      "dependencies": {}
+    },
+    "com.eastberries.mockdatasystem": {
+      "version": "file:C:/Users/Dogu/UnityProjects/CustomPackages/Eastberries/com.eastberries.mockdatasystem",
       "depth": 0,
       "source": "local",
       "dependencies": {}
     },
     "com.eastberries.panelservice": {
-      "version": "file:C:/Users/Dogu/UnityProjects/Packages/Eastberries/com.eastberries.panelservice",
+      "version": "file:C:/Users/Dogu/UnityProjects/CustomPackages/Eastberries/com.eastberries.panelservice",
       "depth": 0,
       "source": "local",
       "dependencies": {}

@@ -1,4 +1,5 @@
 ﻿using System;
+using Cysharp.Threading.Tasks.Triggers;
 using FirebaseService;
 using PanelService;
 using PanelsViews;
@@ -6,6 +7,7 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 using VContainer;
+using Views;
 
 namespace ListViews
 {
@@ -45,11 +47,12 @@ namespace ListViews
 
             dateText.text = $"{data.StartDate}--{data.EndDate}";
 
-            setButton.onClick.AddListener(() =>
-            {
-                _panelService.ShowPanelAsync<MatchResultPanelView, MatchResultPanelView.Data>(
-                    new MatchResultPanelView.Data(data));
-            });
+
+            // setButton.onClick.AddListener(() =>
+            // {
+            //     _panelService.ShowPanelAsync<MatchResultPanelView, MatchResultPanelView.Data>(
+            //         new MatchResultPanelView.Data(data));
+            // });
         }
     }
 }

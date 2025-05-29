@@ -1,230 +1,110 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using Cysharp.Threading.Tasks;
-using FirebaseService;
 using PanelService;
-using Sirenix.OdinInspector;
-using TMPro;
-using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UI;
-using VContainer;
+using Views;
 
 namespace PanelsViews
 {
-    public class MatchResultPanelView : PanelBase, IPanelParameter<MatchResultPanelView.Data>
+    public class MaxSetCountExceededException : Exception
+    {
+        public MaxSetCountExceededException() : base("Maximum set count exceeded.")
+        {
+        }
+    }
+
+    public class MatchResultPanelView : PanelBase, IPanelParameter<MatchResultPanelView.Data>, ITitleHeader
     {
         public class Data
         {
-            public MatchData matchData;
-
-            public Data(MatchData matchData)
+            public Data(MatchInfoView.Data matchData)
             {
-                this.matchData = matchData;
+                MatchData = matchData;
             }
+
+            public MatchInfoView.Data MatchData { get; }
         }
 
-        [SerializeField] private Button[] addSetButtons;
-        [SerializeField] private Button saveButton;
-        [SerializeField] private Toggle walkoverToggle;
+        private const int MAX_SET_COUNT = 6;
 
-        [SerializeField] private Transform scoreInputArea;
-        [SerializeField] private Transform winnerInputArea;
+        [SerializeField] private MatchInfoView matchInfoView;
+        [SerializeField] private Button addSetButton;
+        [SerializeField] private Button removeSetButton;
+        [SerializeField] private Button submitScoreButton;
 
+        [SerializeField] private MatchSetDataView matchSetDataView;
+        [SerializeField] private Transform matchSetDataParent;
 
-        [TitleGroup("HOME PLAYER")] [SerializeField]
-        private TMP_Text homePlayerName;
+        [SerializeField] private Transform headerParent;
 
-        [SerializeField] private TMP_InputField[] firstPlayerScores;
-        [SerializeField] private Button homePlayerWinnerButton;
-        [SerializeField] private TMP_Text homePlayerWinnerButtonText;
-
-
-        [TitleGroup("AWAY PLAYER")] [SerializeField]
-        private TMP_Text awayPlayerName;
-
-        [SerializeField] private TMP_InputField[] secondPlayerScores;
-        [SerializeField] private Button awayPlayerWinnerButton;
-        [SerializeField] private TMP_Text awayPlayerWinnerButtonText;
-
-
-        private IFirebaseService _firebaseService;
-        private int _currentAddSetButtonIndex;
+        private List<MatchSetDataView> _matchSetDataViews = new();
 
         public Data Parameter { get; set; }
+        public Transform GetHeaderParent() => headerParent;
 
-        [Inject]
-        private void Injection(IFirebaseService firebaseService)
+        public HeaderPanelViewTitle.Data HeaderData => new HeaderPanelViewTitle.Data("Score Entry");
+        public HeaderPanelViewTitle HeaderView { get; set; }
+
+        private UniTask InitAsync()
         {
-            _firebaseService = firebaseService;
+            UpdateButtonStates();
+            matchInfoView.InitAsync(Parameter.MatchData).Forget();
+
+            addSetButton.onClick.AddListener(OnAddSetButtonClicked);
+            removeSetButton.onClick.AddListener(OnRemoveSetButtonClicked);
+
+            OnAddSetButtonClicked();
+
+            return UniTask.CompletedTask;
         }
 
         public override async Task ShowAsync()
         {
-            saveButton.onClick.AddListener(OnSaveButtonClicked);
-            walkoverToggle.onValueChanged.AddListener(OnToggleValueChanged);
-            await DataSetInit();
-            DeactivateAddSetButtons();
-
-            addSetButtons[0].gameObject.SetActive(true);
-            SetupButtonListeners();
+            await InitAsync();
             await base.ShowAsync();
         }
 
-        private void OnToggleValueChanged(bool isOn)
+        public override Task HideAsync()
         {
-            if (isOn)
+            addSetButton.onClick.RemoveListener(OnAddSetButtonClicked);
+            removeSetButton.onClick.RemoveListener(OnRemoveSetButtonClicked);
+            return base.HideAsync();
+        }
+
+        private void OnAddSetButtonClicked()
+        {
+            try
             {
-                scoreInputArea.gameObject.SetActive(false);
-                winnerInputArea.gameObject.SetActive(true);
+                UpdateButtonStates();
+                if (_matchSetDataViews.Count >= MAX_SET_COUNT) throw new MaxSetCountExceededException();
+
+                var matchSetDataViewInstance = Instantiate(matchSetDataView, matchSetDataParent);
+                _matchSetDataViews.Add(matchSetDataViewInstance);
+
+                addSetButton.transform.parent.SetAsLastSibling();
             }
-            else
+            catch (MaxSetCountExceededException e)
             {
-                scoreInputArea.gameObject.SetActive(true);
-                winnerInputArea.gameObject.SetActive(false);
+                Debug.LogException(e);
             }
-        }
-
-        private async void OnSaveButtonClicked()
-        {
-            await _firebaseService.UpdateDataAsync
-            (
-                FirebaseCollectionConstants.MATCHES,
-                Parameter.matchData.Id,
-                newData: new Dictionary<string, object>
-                {
-                    { nameof(MatchData.Status), MatchStatus.COMPLETED },
-                    { nameof(MatchData.Sets), GetSetsFromInput() },
-                    {
-                        nameof(MatchData.WinnerUser),
-                        homePlayerWinnerButton.gameObject.activeSelf
-                            ? Parameter.matchData.HomeUser
-                            : Parameter.matchData.AwayUser
-                    }
-                }
-            );
-
-            // save match data 
-            // update players data status
-        }
-
-        private List<MatchSetData> GetSetsFromInput()
-        {
-            var sets = new List<MatchSetData>();
-
-            for (var i = 0; i < _currentAddSetButtonIndex; i++)
-            {
-                sets.Add(new MatchSetData
-                {
-                    HomeUserGames = int.Parse(firstPlayerScores[i].text),
-                    AwayUserGames = int.Parse(secondPlayerScores[i].text)
-                });
-            }
-
-            return sets;
-        }
-
-        private async UniTask DataSetInit()
-        {
-            var homeUserData = await _firebaseService.GetDataByIdAsync<UserData>(FirebaseCollectionConstants.USERS,
-                Parameter.matchData.HomeUser);
-            var awayUserData = await _firebaseService.GetDataByIdAsync<UserData>(FirebaseCollectionConstants.USERS,
-                Parameter.matchData.AwayUser);
-
-            homePlayerName.text = homeUserData.Data.Name;
-            awayPlayerName.text = awayUserData.Data.Name;
-
-            homePlayerWinnerButtonText.text = homeUserData.Data.Name;
-            awayPlayerWinnerButtonText.text = awayUserData.Data.Name;
-        }
-
-        private void DeactivateAddSetButtons()
-        {
-            foreach (var button in addSetButtons)
-            {
-                button.gameObject.SetActive(false);
-            }
-        }
-
-        private void SetupButtonListeners()
-        {
-            for (int i = 0; i < addSetButtons.Length; i++)
-            {
-                var button = addSetButtons[i];
-
-                button.onClick.RemoveAllListeners();
-
-                int setIndex = i;
-                button.onClick.AddListener(() => HandleSetButtonClick(setIndex));
-            }
-        }
-
-
-        private void AddNewSet()
-        {
-            firstPlayerScores[_currentAddSetButtonIndex].gameObject.SetActive(true);
-            secondPlayerScores[_currentAddSetButtonIndex].gameObject.SetActive(true);
-
-            _currentAddSetButtonIndex++;
-
-            UpdateButtonStates();
-        }
-
-        private void HandleSetButtonClick(int clickedIndex)
-        {
-            if (clickedIndex == _currentAddSetButtonIndex)
-            {
-                AddNewSet();
-            }
-            else if (clickedIndex == _currentAddSetButtonIndex - 1 && _currentAddSetButtonIndex > 0)
-            {
-                RemoveSet(clickedIndex);
-            }
-            // If clickedIndex is not the last set, do nothing
-        }
-
-        private void RemoveSet(int setIndex)
-        {
-            if (_currentAddSetButtonIndex <= 0)
-                return;
-
-            // Only remove the last set
-            int lastSetIndex = _currentAddSetButtonIndex - 1;
-
-            // Deactivate and clear only the last set's scores
-            firstPlayerScores[lastSetIndex].gameObject.SetActive(false);
-            firstPlayerScores[lastSetIndex].text = "";
-            secondPlayerScores[lastSetIndex].gameObject.SetActive(false);
-            secondPlayerScores[lastSetIndex].text = "";
-
-            _currentAddSetButtonIndex--;
-            UpdateButtonStates();
         }
 
         private void UpdateButtonStates()
         {
-            for (int i = 0; i < addSetButtons.Length; i++)
-            {
-                if (i < _currentAddSetButtonIndex)
-                {
-                    // Show as remove buttons
-                    addSetButtons[i].gameObject.SetActive(true);
-                    addSetButtons[i].interactable = true;
-                }
-                else if (i == _currentAddSetButtonIndex)
-                {
-                    // Show as add button
-                    addSetButtons[i].gameObject.SetActive(true);
-                    addSetButtons[i].interactable = true;
-                    // You might want to change button text/icon here to indicate "add"
-                }
-                else
-                {
-                    // Hide unused buttons
-                    addSetButtons[i].gameObject.SetActive(false);
-                    addSetButtons[i].interactable = false;
-                }
-            }
+            addSetButton.interactable = _matchSetDataViews.Count < MAX_SET_COUNT;
+            removeSetButton.interactable = _matchSetDataViews.Count > 0;
+        }
+
+        private void OnRemoveSetButtonClicked()
+        {
+            UpdateButtonStates();
+            if (_matchSetDataViews.Count <= 0) return;
+            var lastSetDataView = _matchSetDataViews[^1];
+            _matchSetDataViews.Remove(lastSetDataView);
+            Destroy(lastSetDataView.gameObject);
         }
     }
 }

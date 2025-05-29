@@ -48,6 +48,8 @@ namespace PanelsViews
         {
             _resolver = resolver;
         }
+        
+
 
         private async Task InitAsync()
         {
