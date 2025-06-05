@@ -45,7 +45,7 @@ namespace PanelsViews
         public Data Parameter { get; set; }
         public Transform GetHeaderParent() => headerParent;
 
-        public HeaderPanelViewTitle.Data HeaderData => new HeaderPanelViewTitle.Data("Score Entry");
+        public HeaderPanelViewTitle.Data HeaderData => new("Score Entry");
         public HeaderPanelViewTitle HeaderView { get; set; }
 
         private UniTask InitAsync()
@@ -55,10 +55,18 @@ namespace PanelsViews
 
             addSetButton.onClick.AddListener(OnAddSetButtonClicked);
             removeSetButton.onClick.AddListener(OnRemoveSetButtonClicked);
+            submitScoreButton.onClick.AddListener(OnSubmitButtonClicked);
 
             OnAddSetButtonClicked();
 
             return UniTask.CompletedTask;
+        }
+
+        private void OnSubmitButtonClicked()
+        {
+            // validation controls
+            // pop-up confirm
+            // match service set match data
         }
 
         public override async Task ShowAsync()
