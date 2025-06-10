@@ -14,6 +14,8 @@ namespace PanelsViews
     public class LoginPanelView : PanelBase
     {
         [Inject] private AuthenticationService _authenticationService;
+        [Inject] private IPanelService _panelService;
+
 
         [FoldoutGroup("Sign In")] [SerializeField]
         private Button signInButton;
@@ -53,6 +55,12 @@ namespace PanelsViews
             signUpButton.onClick.AddListener(SignUp);
             signInTabButton.onClick.AddListener(SignInTabClicked);
             signUpTabButton.onClick.AddListener(SignUpTabClicked);
+            _authenticationService.OnAuthenticated += OnAuthenticated;
+        }
+
+        private void OnAuthenticated(UserData _)
+        {
+            _panelService.HidePanelAsync(this);
         }
 
         private void OnDisable()
@@ -61,6 +69,7 @@ namespace PanelsViews
             signUpButton.onClick.RemoveListener(SignUp);
             signInTabButton.onClick.RemoveListener(SignInTabClicked);
             signUpTabButton.onClick.RemoveListener(SignUpTabClicked);
+            _authenticationService.OnAuthenticated -= OnAuthenticated;
         }
 
         private void SignInTabClicked()
