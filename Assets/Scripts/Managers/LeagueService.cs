@@ -10,7 +10,7 @@ using UnityEngine.UI;
 using Views;
 
 [FirestoreData]
-public struct LeagueData
+public class LeagueData
 {
     [FirestoreProperty] public string Id { get; set; }
     [FirestoreProperty] public string Name { get; set; }
@@ -120,7 +120,7 @@ public class LeagueService : ILeagueService
             return -1;
         }
 
-        var users = leagueData.Value.Users;
+        var users = leagueData.Users;
         if (users.IsNullOrEmpty())
         {
             return -1;
@@ -138,7 +138,7 @@ public class LeagueService : ILeagueService
         }
 
         var userList = new List<LeaguePlayerView.Data>();
-        foreach (var user in leagueData.Value.Users)
+        foreach (var user in leagueData.Users)
         {
             var userData =
                 await _firebaseService.GetDataByIdAsync<UserData>(FirebaseCollectionConstants.USERS, user);

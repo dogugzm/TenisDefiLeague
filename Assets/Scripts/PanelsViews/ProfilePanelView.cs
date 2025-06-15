@@ -61,10 +61,14 @@ namespace PanelsViews
             winRateText.text = $"{Parameter.WinRate}%";
             totalMatchesText.text = Parameter.TotalMatches.ToString();
             highestRankText.text = Parameter.HighestRank.ToString();
-            foreach (var achievement in Parameter.Achievements)
+
+            if (Parameter.Achievements is not null)
             {
-                var achievementView = Instantiate(achievementViewPrefab, achievementsParent);
-                achievementView.InitAsync(achievement);
+                foreach (var achievement in Parameter.Achievements)
+                {
+                    var achievementView = Instantiate(achievementViewPrefab, achievementsParent);
+                    achievementView.InitAsync(achievement);
+                }
             }
 
             foreach (var match in Parameter.MatchData)

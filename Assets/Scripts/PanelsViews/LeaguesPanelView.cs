@@ -49,12 +49,17 @@ namespace PanelsViews
 
         private void CheckUserLeague(List<LeagueData> leaguesData)
         {
-            var league = leaguesData.FirstOrDefault(item => item.Id == _userManager.MyData.LeaguesJoined);
+            LeagueData league = leaguesData.FirstOrDefault(item => item.Id == _userManager.MyData.LeaguesJoined);
+            if (league == null) return;
+            {
+            }
             CreateLeagueRow(league);
         }
 
         private void CreateLeagueRow(LeagueData data)
         {
+            if (data is null) return;
+
             LeagueItem leagueItem = Instantiate(leaguePrefab, content);
             leagueItem.SetData(data);
 

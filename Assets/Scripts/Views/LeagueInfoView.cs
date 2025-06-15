@@ -70,12 +70,12 @@ namespace Views
         private async UniTaskVoid OnLeagueButtonClicked()
         {
             var leagueData = await _leagueService.GetLeague(Parameter.LeagueID);
-            var userList = await _leagueService.GetAllLeaguePlayers(leagueData.Value);
+            var userList = await _leagueService.GetAllLeaguePlayers(leagueData);
 
             var panelData = new LeagueProfilePanel.Data(
                 Parameter,
-                leagueData.Value.Users.Count,
-                leagueData.Value.Users.Count,
+                leagueData.Users.Count,
+                leagueData.Users.Count,
                 userList
             );
             await _panelService.ShowPanelAsync<LeagueProfilePanel, LeagueProfilePanel.Data>(panelData);
