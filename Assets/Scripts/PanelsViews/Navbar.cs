@@ -12,7 +12,10 @@ namespace PanelsViews
 
     public class NavbarPanel : PanelBase, IPersistantPanel
     {
-        [SerializeField] private List<Button> tabButtons;
+        [SerializeField] private List<NavbarButton> tabButtons;
+        [SerializeField] private Color activeColor;
+        [SerializeField] private Color inactiveColor;
+
         [Inject] private IPanelService _panelService;
 
         private IPanel _currentTabPanel;
@@ -32,17 +35,42 @@ namespace PanelsViews
         {
             base.Initialize();
             SetupTabButtons();
-            HomePanelClicked().Forget();
+            UpdateTabColors(0);
+            HomePanelClicked();
         }
 
         private void SetupTabButtons()
         {
             if (tabButtons.Count >= 4)
             {
-                tabButtons[0].onClick.AddListener(() => HomePanelClicked());
-                tabButtons[1].onClick.AddListener(() => SwitchTab<LeaguesPanelView>());
-                tabButtons[2].onClick.AddListener(() => SwitchTab<MatchPanelView>());
-                tabButtons[3].onClick.AddListener(ProfileButtonClicked);
+                tabButtons[0].Button.onClick.AddListener(() =>
+                {
+                    UpdateTabColors(0);
+                    HomePanelClicked();
+                });
+                tabButtons[1].Button.onClick.AddListener(() =>
+                {
+                    UpdateTabColors(1);
+                    SwitchTab<LeaguesPanelView>();
+                });
+                tabButtons[2].Button.onClick.AddListener(() =>
+                {
+                    UpdateTabColors(2);
+                    SwitchTab<MatchPanelView>();
+                });
+                tabButtons[3].Button.onClick.AddListener(() =>
+                {
+                    UpdateTabColors(3);
+                    ProfileButtonClicked();
+                });
+            }
+        }
+
+        private void UpdateTabColors(int activeIndex)
+        {
+            for (int i = 0; i < tabButtons.Count; i++)
+            {
+                tabButtons[i].Convert(i == activeIndex, activeColor, inactiveColor);
             }
         }
 

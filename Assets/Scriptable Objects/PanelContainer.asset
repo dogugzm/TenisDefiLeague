@@ -48,7 +48,7 @@ MonoBehaviour:
     canvasId: 0
     shouldFitToCanvas: 1
     prewarmCount: 0
-  - prefab: {fileID: 3362463753816199426, guid: eb0f45a91347a634a9ddfa2dce9ba841, type: 3}
+  - prefab: {fileID: 6904416908656016598, guid: eb0f45a91347a634a9ddfa2dce9ba841, type: 3}
     destroyOnHide: 0
     canvasId: 3
     shouldFitToCanvas: 0

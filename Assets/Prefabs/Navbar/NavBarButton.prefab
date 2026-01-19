@@ -193,7 +193,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 0, g: 0, b: 0, a: 1}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
@@ -243,6 +243,7 @@ GameObject:
   - component: {fileID: 6287668786190902884}
   - component: {fileID: 717475699982101203}
   - component: {fileID: 200273294844828382}
+  - component: {fileID: 3588754658806393389}
   m_Layer: 5
   m_Name: NavBarButton
   m_TagString: Untagged
@@ -373,3 +374,18 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls: []
+--- !u!114 &3588754658806393389
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7399778675426454714}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f652e1af5c3f9aa40826e074def087db, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Button: {fileID: 200273294844828382}
+  icon: {fileID: 9150307868359894901}
+  label: {fileID: 2856255708064307664}
