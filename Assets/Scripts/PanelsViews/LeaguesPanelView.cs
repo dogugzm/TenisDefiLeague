@@ -1,12 +1,9 @@
 using System.Collections.Generic;
 using System.Linq;
 using Configs;
-using Cysharp.Threading.Tasks;
 using FirebaseService;
-using MockDataSystem;
 using PanelService;
 using UnityEngine;
-using UnityEngine.Serialization;
 using UnityEngine.UI;
 using VContainer;
 using Views;

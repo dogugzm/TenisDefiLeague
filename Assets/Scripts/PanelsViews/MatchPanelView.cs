@@ -10,7 +10,7 @@ using VContainer.Unity;
 
 namespace PanelsViews
 {
-    public class MatchPanelView : PanelBase
+    public class MatchPanelView : PanelBase , ITitleHeader
     {
         [Inject] private MatchService _matchService;
         [Inject] private IObjectResolver _resolver;
@@ -21,6 +21,7 @@ namespace PanelsViews
         [SerializeField] private Image bgImage;
 
         private List<MatchDataView> _matchDataViews = new();
+        [SerializeField] private Transform headerTransform;
 
         protected override void Awake()
         {
@@ -65,5 +66,10 @@ namespace PanelsViews
 
             await base.ShowAsync();
         }
+
+        public Transform GetHeaderParent() => headerTransform;
+
+        public HeaderPanelViewTitle.Data HeaderData => new("Matches");
+        public HeaderPanelViewTitle HeaderView { get; set; }
     }
 }
