@@ -1,33 +1,49 @@
 using System.Collections.Generic;
 using System.Linq;
+using Configs;
 using Cysharp.Threading.Tasks;
 using FirebaseService;
 using MockDataSystem;
 using PanelService;
 using UnityEngine;
+using UnityEngine.Serialization;
+using UnityEngine.UI;
 using VContainer;
 using Views;
 
 namespace PanelsViews
 {
-    public class LeaguesPanelView : PanelBase
+    public class LeaguesPanelView : PanelBase, ITitleHeader
     {
         [SerializeField] LeagueItem leaguePrefab;
         [SerializeField] Transform content;
+        [SerializeField] private Image bgImage;
+        [SerializeField] private Transform headerParent;
 
         private ILeagueService _leagueService;
         private IFirebaseService _firebaseService;
         private UserManager _userManager;
         private IPanelService _panelService;
+        private UIThemeSettings _themeSettings;
 
         [Inject]
         private void Injection(ILeagueService leagueService, IFirebaseService firebaseService, UserManager userManager,
-            IPanelService panelService)
+            IPanelService panelService, UIThemeSettings themeSettings)
         {
             _leagueService = leagueService;
             _firebaseService = firebaseService;
             _userManager = userManager;
             _panelService = panelService;
+            _themeSettings = themeSettings;
+        }
+
+        protected override void Awake()
+        {
+            base.Awake();
+            if (bgImage)
+            {
+                bgImage.color = _themeSettings.PanelBGColor;
+            }
         }
 
         private async void Start()
@@ -51,8 +67,6 @@ namespace PanelsViews
         {
             LeagueData league = leaguesData.FirstOrDefault(item => item.Id == _userManager.MyData.LeaguesJoined);
             if (league == null) return;
-            {
-            }
             CreateLeagueRow(league);
         }
 
@@ -77,5 +91,10 @@ namespace PanelsViews
                 );
             });
         }
+
+        public Transform GetHeaderParent() => headerParent;
+
+        public HeaderPanelViewTitle.Data HeaderData => new("Leagues");
+        public HeaderPanelViewTitle HeaderView { get; set; }
     }
 }

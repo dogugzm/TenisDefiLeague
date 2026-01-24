@@ -1,10 +1,12 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
+using Configs;
 using Cysharp.Threading.Tasks;
 using PanelService;
 using Sirenix.OdinInspector;
 using Unity.Collections.LowLevel.Unsafe;
 using UnityEngine;
+using UnityEngine.UI;
 using VContainer;
 using VContainer.Unity;
 using Views;
@@ -57,8 +59,10 @@ namespace PanelsViews
         private GameObject announcementsArea;
 
         [SerializeField] private Transform HeaderArea;
+        [SerializeField] private Image bgImage;
 
         private IObjectResolver _objectResolver;
+        private UIThemeSettings _themeSettings;
 
         public Data Parameter { get; set; }
         public Transform GetHeaderParent() => HeaderArea;
@@ -66,9 +70,19 @@ namespace PanelsViews
         public HeaderPanelViewUser HeaderView { get; set; }
 
         [Inject]
-        public void Injection(IObjectResolver objectResolver)
+        public void Injection(IObjectResolver objectResolver, UIThemeSettings themeSettings)
         {
             _objectResolver = objectResolver;
+            _themeSettings = themeSettings;
+        }
+
+        protected override void Awake()
+        {
+            base.Awake();
+            if (bgImage)
+            {
+                bgImage.color = _themeSettings.PanelBGColor;
+            }
         }
 
         public override async Task ShowAsync()

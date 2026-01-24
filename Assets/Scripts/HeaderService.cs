@@ -1,6 +1,8 @@
 ﻿using PanelService;
 using PanelsViews;
 using UnityEngine;
+using UnityEngine.Pool;
+using VContainer;
 using VContainer.Unity;
 
 public interface ITitleHeader : IHeader<HeaderPanelViewTitle, HeaderPanelViewTitle.Data>
@@ -15,18 +17,19 @@ public interface IUserHeader : IHeader<HeaderPanelViewUser, HeaderPanelViewUser.
 public class HeaderService : IInitializable
 {
     private readonly IPanelService _panelService;
+    private readonly IObjectResolver _objectResolver;
     private HeaderPanelViewTitle headerTitlePrefab;
     private HeaderPanelViewUser headerUserPrefab;
 
     public HeaderService(IPanelService panelService, HeaderPanelViewTitle headerTitlePrefab,
-        HeaderPanelViewUser headerUserPrefab)
+        HeaderPanelViewUser headerUserPrefab, IObjectResolver objectResolver)
     {
         _panelService = panelService;
         this.headerTitlePrefab = headerTitlePrefab;
         this.headerUserPrefab = headerUserPrefab;
+        _objectResolver = objectResolver;
     }
-
-
+    
     public void Initialize()
     {
         _panelService.OnPanelShow += OnPanelShow;
@@ -38,7 +41,7 @@ public class HeaderService : IInitializable
         {
             if (titleHeader.HeaderView == null)
             {
-                var headerObject = Object.Instantiate(headerTitlePrefab, titleHeader.GetHeaderParent());
+                var headerObject = _objectResolver.Instantiate(headerTitlePrefab, titleHeader.GetHeaderParent());
                 titleHeader.HeaderView = headerObject;
                 headerObject.Init(titleHeader.HeaderData);
             }
@@ -51,7 +54,7 @@ public class HeaderService : IInitializable
         {
             if (userHeader.HeaderView == null)
             {
-                var headerObject = Object.Instantiate(headerUserPrefab, userHeader.GetHeaderParent());
+                var headerObject = _objectResolver.Instantiate(headerUserPrefab, userHeader.GetHeaderParent());
                 userHeader.HeaderView = headerUserPrefab;
                 headerObject.Init(userHeader.HeaderData);
             }

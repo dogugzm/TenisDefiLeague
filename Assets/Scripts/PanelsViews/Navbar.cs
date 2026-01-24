@@ -1,4 +1,5 @@
-﻿using Cysharp.Threading.Tasks;
+﻿using Configs;
+using Cysharp.Threading.Tasks;
 using PanelService;
 using VContainer;
 using Views;
@@ -13,10 +14,10 @@ namespace PanelsViews
     public class NavbarPanel : PanelBase, IPersistantPanel
     {
         [SerializeField] private List<NavbarButton> tabButtons;
-        [SerializeField] private Color activeColor;
-        [SerializeField] private Color inactiveColor;
 
         [Inject] private IPanelService _panelService;
+        [Inject] private UIThemeSettings _themeSettings;
+
 
         private IPanel _currentTabPanel;
         private ILeagueService _leagueService;
@@ -70,7 +71,7 @@ namespace PanelsViews
         {
             for (int i = 0; i < tabButtons.Count; i++)
             {
-                tabButtons[i].Convert(i == activeIndex, activeColor, inactiveColor);
+                tabButtons[i].Convert(i == activeIndex, _themeSettings.ActiveColor, _themeSettings.DeactiveColor);
             }
         }
 

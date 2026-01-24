@@ -412,7 +412,7 @@ GameObject:
   - component: {fileID: 2825982832712501519}
   - component: {fileID: 6706404477958030868}
   m_Layer: 5
-  m_Name: MatchesPanel
+  m_Name: MatchPanelView
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -483,7 +483,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 5280566075599786753}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: a9d2f9067277ade4e9b47012ea4d9e17, type: 3}
   m_Name: 
@@ -573,6 +573,7 @@ MonoBehaviour:
   canvasGroup: {fileID: 8946546635621306110}
   matchDataViewPrefab: {fileID: 5516937359710173316, guid: 75d6b4a28b631244b8f991c74e90b825, type: 3}
   container: {fileID: 7500028114370144137}
+  bgImage: {fileID: 8139237799624629924}
 --- !u!114 &6706404477958030868
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -645,7 +646,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6914063830075771220}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
   m_Name: 

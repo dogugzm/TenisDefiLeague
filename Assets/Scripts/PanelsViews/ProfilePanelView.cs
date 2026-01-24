@@ -1,9 +1,12 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using Configs;
 using Cysharp.Threading.Tasks;
 using PanelService;
 using TMPro;
 using UnityEngine;
+using UnityEngine.UI;
+using VContainer;
 using Views;
 
 namespace PanelsViews
@@ -31,6 +34,8 @@ namespace PanelsViews
             public List<MatchInfoView.Data> MatchData { get; set; }
         }
 
+        [Inject] private UIThemeSettings _themeSettings;
+
         [SerializeField] private Transform headerParent;
         [SerializeField] private UserInfoView userInfoView;
         [SerializeField] private TMP_Text winRateText;
@@ -42,12 +47,22 @@ namespace PanelsViews
 
         [SerializeField] private MatchInfoView matchInfoViewPrefab;
         [SerializeField] private Transform matchesParent;
+        [SerializeField] private Image bgImage;
 
         public Transform GetHeaderParent() => headerParent;
 
         public HeaderPanelViewTitle.Data HeaderData => new("Profile");
 
         public HeaderPanelViewTitle HeaderView { get; set; }
+
+        protected override void Awake()
+        {
+            base.Awake();
+            if (bgImage)
+            {
+                bgImage.color = _themeSettings.PanelBGColor;
+            }
+        }
 
         public override Task ShowAsync()
         {

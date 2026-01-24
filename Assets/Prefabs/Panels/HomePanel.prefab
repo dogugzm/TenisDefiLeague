@@ -1548,6 +1548,7 @@ MonoBehaviour:
   announcementsParent: {fileID: 8173960092582791014}
   announcementsArea: {fileID: 3204632611244100032}
   HeaderArea: {fileID: 7842219975555228802}
+  bgImage: {fileID: 3478724388125409142}
 --- !u!114 &3478724388125409142
 MonoBehaviour:
   m_ObjectHideFlags: 0

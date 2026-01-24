@@ -1,3 +1,4 @@
+using Configs;
 using Managers;
 using PanelService;
 using UnityEngine;
@@ -10,6 +11,9 @@ namespace PanelsViews
     {
         [Inject] private AuthenticationService _authenticationService;
         [Inject] private IPanelService _panelService;
+        [Inject] private UIThemeSettings _themeSettings;
+
+        [SerializeField] Image bgImage;
 
         [SerializeField] Button signInPanelButton;
         [SerializeField] Button signUppanelButton;
@@ -26,6 +30,14 @@ namespace PanelsViews
             signUppanelButton.onClick.RemoveAllListeners();
         }
 
+        protected override void Awake()
+        {
+            base.Awake();
+            if (bgImage)
+            {
+                bgImage.color = _themeSettings.PanelBGColor;
+            }
+        }
 
         private async void Login()
         {

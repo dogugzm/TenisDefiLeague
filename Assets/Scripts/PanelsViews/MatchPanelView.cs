@@ -1,8 +1,10 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
+using Configs;
 using ListViews;
 using PanelService;
 using UnityEngine;
+using UnityEngine.UI;
 using VContainer;
 using VContainer.Unity;
 
@@ -12,11 +14,22 @@ namespace PanelsViews
     {
         [Inject] private MatchService _matchService;
         [Inject] private IObjectResolver _resolver;
+        [Inject] private UIThemeSettings _themeSettings;
 
         [SerializeField] private MatchDataView matchDataViewPrefab;
         [SerializeField] private Transform container;
+        [SerializeField] private Image bgImage;
 
         private List<MatchDataView> _matchDataViews = new();
+
+        protected override void Awake()
+        {
+            base.Awake();
+            if (bgImage)
+            {
+                bgImage.color = _themeSettings.PanelBGColor;
+            }
+        }
 
         public override async Task ShowAsync()
         {

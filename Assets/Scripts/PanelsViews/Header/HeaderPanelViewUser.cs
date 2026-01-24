@@ -1,5 +1,8 @@
-﻿using PanelService;
+﻿using Configs;
+using PanelService;
 using UnityEngine;
+using UnityEngine.UI;
+using VContainer;
 using Views;
 
 namespace PanelsViews
@@ -17,6 +20,24 @@ namespace PanelsViews
         }
 
         [SerializeField] private UserInfoView userInfoView;
+        [SerializeField] private Image bgImage;
+        [SerializeField] private Image safeAreaImage;
+
+        
+        [Inject] private UIThemeSettings _themeSettings;
+        
+        protected override void Awake()
+        {
+            base.Awake();
+            if (bgImage)
+            {
+                bgImage.color = _themeSettings.HeaderBGColor;
+            }
+            if (safeAreaImage)
+            {
+                safeAreaImage.color = _themeSettings.HeaderBGColor;
+            }
+        }
 
         public override void Init(Data data)
         {

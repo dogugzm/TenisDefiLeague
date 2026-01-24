@@ -1,0 +1,20 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d128f971edcb76c409189cfe0e9d9326, type: 3}
+  m_Name: BlackThemeSettings
+  m_EditorClassIdentifier: 
+  PanelBGColor: {r: 0.2, g: 0.2, b: 0.2, a: 1}
+  HeaderBGColor: {r: 0.4039216, g: 0.9607844, b: 0.6901961, a: 1}
+  ActiveColor: {r: 0.40392157, g: 0.9607843, b: 0.6901961, a: 1}
+  DeactiveColor: {r: 0.5294118, g: 0.5294118, b: 0.5294118, a: 1}
+  MainFont: {fileID: 0}
+  HeaderFont: {fileID: 0}

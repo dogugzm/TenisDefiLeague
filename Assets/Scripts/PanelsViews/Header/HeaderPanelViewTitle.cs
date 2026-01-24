@@ -1,6 +1,9 @@
-﻿using PanelService;
+﻿using Configs;
+using PanelService;
 using TMPro;
 using UnityEngine;
+using UnityEngine.UI;
+using VContainer;
 
 namespace PanelsViews
 {
@@ -14,7 +17,26 @@ namespace PanelsViews
         }
 
         [SerializeField] private TMP_Text titleText;
+        [SerializeField] private Image bgImage;
+        [SerializeField] private Image safeAreaImage;
+
+        
+        [Inject] private UIThemeSettings _themeSettings;
+        
         public bool IgnoreJoinStack => false;
+
+        protected override void Awake()
+        {
+            base.Awake();
+            if (bgImage)
+            {
+                bgImage.color = _themeSettings.HeaderBGColor;
+            }
+            if (safeAreaImage)
+            {
+                safeAreaImage.color = _themeSettings.HeaderBGColor;
+            }
+        }
 
         public override void Init(Data data)
         {

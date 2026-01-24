@@ -1,3 +1,4 @@
+using Configs;
 using Managers;
 using MockDataSystem;
 using PanelService;
@@ -9,6 +10,7 @@ using VContainer.Unity;
 public class GameLifetimeScope : LifetimeScope
 {
     [SerializeField] private PanelSettings _panelSettings;
+    [SerializeField] private UIThemeSettings _uiThemeSettings;
     [SerializeField] private HeaderPanelViewTitle titleHeaderPrefab;
     [SerializeField] private HeaderPanelViewUser titleHeaderUserPrefab;
 
@@ -16,6 +18,17 @@ public class GameLifetimeScope : LifetimeScope
     protected override void Configure(IContainerBuilder builder)
     {
         builder.RegisterInstance(_panelSettings);
+        if (_uiThemeSettings != null)
+        {
+            builder.RegisterInstance(_uiThemeSettings);
+        }
+        else
+        {
+            Debug.LogWarning("UIThemeSettings is not assigned in GameLifetimeScope!");
+        }
+
+        if (Camera.main != null) Camera.main.backgroundColor = _uiThemeSettings.PanelBGColor;
+
         builder.RegisterInstance(titleHeaderPrefab).AsSelf();
         builder.RegisterInstance(titleHeaderUserPrefab).AsSelf();
         builder.Register<FirebaseService.FirebaseService>(Lifetime.Singleton).AsImplementedInterfaces().AsSelf();
