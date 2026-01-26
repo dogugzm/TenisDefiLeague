@@ -1,11 +1,13 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
+using Configs;
 using FirebaseService;
 using PanelService;
 using TMPro;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.Serialization;
+using UnityEngine.UI;
 using VContainer;
 using VContainer.Unity;
 using Views;
@@ -37,19 +39,33 @@ namespace PanelsViews
         [SerializeField] private TMP_Text playedMatchText;
 
         [SerializeField] private LeaguePlayerView leaguePlayerViewPrefab;
+        [SerializeField] private Image bgImage;
+        
         [SerializeField] private Transform leaguePlayersContent;
 
         public Data Parameter { get; set; }
         private IObjectResolver _resolver;
+        private UIThemeSettings _themeSettings;
+        
+        
+
         private List<GameObject> _leaguePlayers = new();
 
         [Inject]
-        private void Injection(IObjectResolver resolver)
+        private void Injection(IObjectResolver resolver, UIThemeSettings themeSettings)
         {
             _resolver = resolver;
+            _themeSettings = themeSettings;
         }
-        
 
+        protected override void Awake()
+        {
+            base.Awake();
+            if (bgImage)
+            {
+                bgImage.color = _themeSettings.PanelBGColor;
+            }
+        }
 
         private async Task InitAsync()
         {
