@@ -83,7 +83,15 @@ namespace PanelsViews
             {
                 var homeUser = await _userManager.GetUserData(match.HomeUser);
                 var awayUser = await _userManager.GetUserData(match.AwayUser);
-
+                
+                string leagueName = null;
+                
+                if (match.LeagueID is not null)
+                {
+                    var leagueData = await _leagueService.GetLeague(match.LeagueID);
+                    leagueName = leagueData?.Name;
+                }
+                
                 var setDataList = new List<MatchInfoView.MatchSetData>();
 
                 foreach (var setData in match.Sets)
@@ -95,7 +103,9 @@ namespace PanelsViews
                     match.EndDate,
                     new UserInfoView.Data(homeUser.Value.Name, null),
                     new UserInfoView.Data(awayUser.Value.Name, null),
-                    setDataList
+                    setDataList,
+                    leagueName,
+                    match.HomeUser == match.WinnerUser
                 ));
             }
 

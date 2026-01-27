@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using Cysharp.Threading.Tasks;
 using FirebaseService;
+using JetBrains.Annotations;
 using VContainer;
 using VContainer.Unity;
 
@@ -24,6 +25,8 @@ public class MatchData
     [FirestoreProperty] public List<MatchSetData> Sets { get; set; } = new();
     [FirestoreProperty] public int Status { get; set; } = (int)MatchStatus.NOT_STARTED;
     [FirestoreProperty] public string WinnerUser { get; set; }
+    [FirestoreProperty] [CanBeNull] public string LeagueID { get; set; }
+    
 }
 
 [FirestoreData]

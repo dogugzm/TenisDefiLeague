@@ -24,6 +24,10 @@ PrefabInstance:
       propertyPath: m_AnchoredPosition.x
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 1064314011788340922, guid: 8c77977ac36dc2b43a49320228258f5b, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 1737344707840666626, guid: 8c77977ac36dc2b43a49320228258f5b, type: 3}
       propertyPath: m_fontColor.b
       value: 0
@@ -63,6 +67,10 @@ PrefabInstance:
     - target: {fileID: 3382506419045563446, guid: 8c77977ac36dc2b43a49320228258f5b, type: 3}
       propertyPath: m_Name
       value: UserView Home
+      objectReference: {fileID: 0}
+    - target: {fileID: 5091629359136084017, guid: 8c77977ac36dc2b43a49320228258f5b, type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 6514439156387805435, guid: 8c77977ac36dc2b43a49320228258f5b, type: 3}
       propertyPath: m_Pivot.x
