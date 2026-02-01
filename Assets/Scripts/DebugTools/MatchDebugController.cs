@@ -47,6 +47,7 @@ namespace DebugTools
                 Log("Services not injected! Make sure you are in Play Mode and VContainer is set up.");
                 return;
             }
+            
 
             if (string.IsNullOrEmpty(_opponentId))
             {

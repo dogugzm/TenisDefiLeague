@@ -630,7 +630,7 @@ GameObject:
   - component: {fileID: 2115547610904721201}
   - component: {fileID: 8447871175729715518}
   m_Layer: 5
-  m_Name: LeagueCard
+  m_Name: LeagueView
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

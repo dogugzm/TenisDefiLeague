@@ -1,10 +1,8 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
 using Configs;
-using FirebaseService;
 using PanelService;
 using TMPro;
-using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.Serialization;
 using UnityEngine.UI;
@@ -18,13 +16,12 @@ namespace PanelsViews
     {
         public class Data
         {
-            public LeagueInfoView.Data LeagueInfoData { get; }
+            public LeagueView.Data LeagueInfoData { get; }
             public int Participants { get; }
             public int TotalMatches { get; }
-
             public List<LeaguePlayerView.Data> LeaguePlayerViews { get; set; }
 
-            public Data(LeagueInfoView.Data leagueInfoData, int participants, int totalMatches,
+            public Data(LeagueView.Data leagueInfoData, int participants, int totalMatches,
                 List<LeaguePlayerView.Data> leaguePlayerViews)
             {
                 LeagueInfoData = leagueInfoData;
@@ -34,7 +31,7 @@ namespace PanelsViews
             }
         }
 
-        [SerializeField] private LeagueInfoView leagueInfoView;
+        [SerializeField] private LeagueView leagueView;
         [SerializeField] private TMP_Text participantText;
         [SerializeField] private TMP_Text playedMatchText;
 
@@ -72,7 +69,7 @@ namespace PanelsViews
             _leaguePlayers.ForEach(x => Destroy(x)); //TODO: Implement pooling
             _leaguePlayers.Clear();
 
-            leagueInfoView.InitAsync(Parameter.LeagueInfoData);
+            leagueView.SetData(Parameter.LeagueInfoData);
             participantText.text = Parameter.Participants.ToString();
             playedMatchText.text = Parameter.TotalMatches.ToString();
             foreach (var player in Parameter.LeaguePlayerViews)
@@ -82,8 +79,7 @@ namespace PanelsViews
                 _leaguePlayers.Add(leaguePlayerView.gameObject);
             }
         }
-
-
+        
         public override async Task ShowAsync()
         {
             InitAsync();

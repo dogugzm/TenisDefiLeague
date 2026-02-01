@@ -12,7 +12,7 @@ namespace PanelsViews
 {
     public class LeaguesPanelView : PanelBase, ITitleHeader
     {
-        [SerializeField] LeagueItem leaguePrefab;
+        [SerializeField] LeagueView leaguePrefab;
         [SerializeField] Transform content;
         [SerializeField] private Image bgImage;
         [SerializeField] private Transform headerParent;
@@ -71,16 +71,15 @@ namespace PanelsViews
         {
             if (data is null) return;
 
-            LeagueItem leagueItem = Instantiate(leaguePrefab, content);
-            leagueItem.SetData(data);
+            LeagueView leagueView = Instantiate(leaguePrefab, content);
+            leagueView.SetData(new LeagueView.Data {LeagueData = data});
 
-            leagueItem.Button.onClick.AddListener(async () =>
+            leagueView.Button.onClick.AddListener(async () =>
             {
                 var userList = await _leagueService.GetAllLeaguePlayers(data);
                 _panelService.ShowPanelAsync<LeagueProfilePanel, LeagueProfilePanel.Data>(
                     new LeagueProfilePanel.Data(
-                        new LeagueInfoView.Data(data.Name, data.Description, null, data.Users.Count, data.Users.Count,
-                            data.Id),
+                        new LeagueView.Data {LeagueData = data},
                         data.Users.Count,
                         data.Users.Count,
                         userList

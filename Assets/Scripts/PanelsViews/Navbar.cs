@@ -136,16 +136,14 @@ namespace PanelsViews
         public async UniTask HomePanelClicked()
         {
             var leagueData = await _leagueService.TryGetCurrentLeague();
-            var joinedLeagueData = new List<LeagueInfoView.Data>();
+            var joinedLeagueData = new List<LeagueView.Data>();
             int pos;
             if (leagueData is not null)
             {
                 pos = await _leagueService.TryGetMyPositionInLeague(leagueData.Id);
-                joinedLeagueData = new List<LeagueInfoView.Data>()
+                joinedLeagueData = new List<LeagueView.Data>()
                 {
-                    new(leagueData.Name, leagueData.Description,
-                        null, leagueData.Users.Count, pos, leagueData.Id
-                    )
+                    new(){LeagueData = leagueData}
                 };
             }
 

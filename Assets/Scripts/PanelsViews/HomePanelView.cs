@@ -19,11 +19,11 @@ namespace PanelsViews
         {
             public UserInfoView.Data UserInfoData { get; }
             public List<AnnouncementView.Data> AnnouncementsData { get; }
-            public List<LeagueInfoView.Data> JoinedLeaguesData { get; }
+            public List<LeagueView.Data> JoinedLeaguesData { get; }
             public List<MatchInfoView.Data> UpcomingMatchesData { get; }
 
             public Data(UserInfoView.Data userInfoData, List<AnnouncementView.Data> announcementsData,
-                List<LeagueInfoView.Data> joinedLeaguesData, List<MatchInfoView.Data> upcomingMatchesData)
+                List<LeagueView.Data> joinedLeaguesData, List<MatchInfoView.Data> upcomingMatchesData)
             {
                 UserInfoData = userInfoData;
                 AnnouncementsData = announcementsData;
@@ -41,7 +41,7 @@ namespace PanelsViews
         private GameObject joinedLeaguesArea;
 
         [FoldoutGroup("LEAGUE")] [SerializeField]
-        private LeagueInfoView leagueInfoViewPrefab;
+        private LeagueView leagueInfoViewPrefab;
 
         [FoldoutGroup("MATCH")] [SerializeField]
         private Transform upcomingMatchesParent;
@@ -94,7 +94,7 @@ namespace PanelsViews
             await base.ShowAsync();
         }
 
-        private async UniTask CreateLeagueViews(List<LeagueInfoView.Data> leagueData)
+        private async UniTask CreateLeagueViews(List<LeagueView.Data> leagueData)
         {
             if (SetContainerIsNotVisible(leagueData.Count, joinedLeaguesArea))
             {
@@ -105,7 +105,7 @@ namespace PanelsViews
                 foreach (var leagueInfo in leagueData)
                 {
                     var leagueInfoView = _objectResolver.Instantiate(leagueInfoViewPrefab, joinedLeaguesParent);
-                    await leagueInfoView.InitAsync(leagueInfo);
+                    leagueInfoView.SetData(leagueInfo);
                 }
             }
         }
